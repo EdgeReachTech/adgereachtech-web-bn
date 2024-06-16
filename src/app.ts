@@ -1,7 +1,11 @@
 import connection from './config/db'
 import express from 'express'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 const PORT = process.env.PORT
-connection.authenticate()
+connection()
 .then(()=>console.log('database connected successfully'))
 .catch((error: any)=> console.log(error))
 const app = express()

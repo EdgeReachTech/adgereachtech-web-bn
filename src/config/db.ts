@@ -1,12 +1,15 @@
-import { Sequelize} from 'sequelize'
-import dotenv from 'dotenv'
-dotenv.config()
+import mongoose from "mongoose"
+import User from "../models/User"
 
-const connection =  new Sequelize(process.env.DB_NAME_TEST!,
-     process.env.DB_USER_TEST!,
-     process.env.DB_PASSWORD_TEST!,{
-     host: process.env.DB_HOST_TEST!,
-     dialect:"mysql"
-     })
+
+const connection = async () =>{
+     try{
+          await mongoose.connect(process.env.MONGODB_URI as string,{})
+
+     }
+     catch (error){
+     console.log(error)
+     }
+}
 
 export default connection
