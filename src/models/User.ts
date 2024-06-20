@@ -18,7 +18,7 @@ interface interUser extends Document {
  const userSchema = new Schema<interUser> ({
      firstName:{type:String, required:true },
      lastName:{type:String, required:true },
-     location:{type:String, required:true,  default:'Unknown'},
+     location:{type:String, required:false,  default:'Unknown'},
      dateOfBirth:{type:Date, required:false},
      status:{type:String, required:true,enum:['pending','active','blocked'], default:'pending'},
      role:{type:String, required:true,enum:['developer','President','Project Manager','Quality Assurence','Vice President'], default:'developer'},
