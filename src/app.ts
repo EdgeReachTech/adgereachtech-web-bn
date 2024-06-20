@@ -1,6 +1,7 @@
 import connection from './config/db'
 import express from 'express'
 import dotenv from 'dotenv'
+import { userRouter } from './routes/userRoutes'
 
 dotenv.config()
 
@@ -13,6 +14,7 @@ app.use(express.json())
 app.get('/',(req, res)=>{
     res.send('welcome to edge-reach tech website')
 })
+app.use('/user',userRouter)
 app.listen(PORT,()=>{
     console.log(`app is listening to ${PORT}`)
 })
