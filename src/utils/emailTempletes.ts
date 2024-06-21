@@ -1,4 +1,4 @@
-export const verificationTempletes =(user:any)=>{
+export const verificationTempletes =(user:any,token:any)=>{
  return(
     `<!DOCTYPE html>
     <html>
@@ -45,7 +45,7 @@ export const verificationTempletes =(user:any)=>{
             <div class="email-body">
                 <p>Hello, ${user.firstName}</p>
                 <p>Thank you for joining our service. Click this button to verify your account</p>
-               <a href="${process.env.FRONT_END_URI as string}/verify/${user._id}"> Verify your Account</a>
+               <a href="${process.env.FRONT_END_URI as string}/user/verify?${token}"> Verify your Account</a>
                 <p>Best Regards,<br> Edge Reach Tech Team</p>
             </div>
             <div class="email-footer">
