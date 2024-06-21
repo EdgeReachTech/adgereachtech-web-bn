@@ -3,6 +3,7 @@ import { Document, model, Schema } from 'mongoose'
 interface interUser extends Document {
      firstName:string
      lastName:string
+     email:string,
      location:string
      dateOfBirth:Date
      status:string
@@ -18,6 +19,7 @@ interface interUser extends Document {
  const userSchema = new Schema<interUser> ({
      firstName:{type:String, required:true },
      lastName:{type:String, required:true },
+     email:{type:String, required:true},
      location:{type:String, required:false,  default:'Unknown'},
      dateOfBirth:{type:Date, required:false},
      status:{type:String, required:true,enum:['pending','active','blocked'], default:'pending'},
