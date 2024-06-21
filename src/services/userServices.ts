@@ -1,6 +1,7 @@
 import { sendMessage } from "../helpers/sendEmail"
 import User from "../models/User"
 import { verificationTempletes } from "../utils/emailTempletes"
+import {generateToken } from "../utils/tokenUtils"
 export class userService{
 
 static registerUser = async(user:any)=>{
@@ -17,7 +18,7 @@ static registerUser = async(user:any)=>{
     from: process.env.OUR_EMAIL as string,
     to: createUser.email,
     subject: 'Verify Account', 
-    html: verificationTempletes(createUser)
+    html: verificationTempletes(createUser,generateToken(createUser))
     }
 
     await sendMessage(mailOptions)
