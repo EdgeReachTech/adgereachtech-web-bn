@@ -39,11 +39,11 @@ export class userController {
    }
 
    static updateUser = async (req: any, res: Response) => {
-      const userId = req.user
+      const user = req.user.user
       const updatedData = req.body;
 
       try {
-         const result = await userService.updateUser(userId, updatedData);
+         const result = await userService.updateUser(user, updatedData);
          return res.status(result.status).json({ message: result.message, user: result.user });
       } catch (error: any) {
          return res.status(500).json({ error: `Error ${error.message} happened` });

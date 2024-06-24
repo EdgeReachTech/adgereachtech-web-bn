@@ -1,4 +1,3 @@
-import { error } from 'console';
 import jwt from 'jsonwebtoken'
 
 
@@ -14,9 +13,9 @@ catch(error:any){
 
 export const decodeToken = (token: any) => {
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY!);
+        const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
         return decoded;
     } catch (error) {
-        return null;
+       console.log(error, token)
     }
 };

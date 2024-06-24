@@ -1,9 +1,9 @@
 import { sendMessage } from "../helpers/sendEmail"
-import User from "../models/User"
+import User, { interUser } from "../models/User"
 import VerificationToken from "../models/verification"
 import { verificationTemplates } from "../utils/emailTempletes"
 import { comparePassword } from "../utils/passwordUtils"
-import { decodeToken, generateToken } from "../utils/tokenUtils"
+import {  generateToken } from "../utils/tokenUtils"
 
 export class userService {
 
@@ -49,7 +49,10 @@ export class userService {
       }
 
       if (!userExist.isVerified) {
-        const verificationToken = generateToken(userExist);
+        const verificationToken = generateToken({
+          _id: userExist._id,
+          email: userExist.email
+        })
         let mailOptions = {
           from: process.env.OUR_EMAIL as string,
           to: userExist.email,
@@ -60,7 +63,11 @@ export class userService {
         return { status: 200, message: 'your are not verified. check email for account verification' };
       }
 
-      const token = generateToken(userExist);
+      const user = {
+        _id: userExist._id,
+        email: userExist.email,
+      };
+      const token = generateToken(user)
 
       return { status: 200, message: 'Logged in successfully', token };
     } catch (error: any) {
@@ -69,13 +76,13 @@ export class userService {
     }
   }
 
-  static updateUser = async (userId: string, updatedData: any) => {
+  static updateUser = async (userData:any, updatedData: any) => {
     // Exclude email and password from updatedData
     const { email, password, ...filteredData } = updatedData;
     try {
-      const user = await User.findByIdAndUpdate(userId, filteredData, { new: true });
+      const user = await User.findByIdAndUpdate(userData._id, filteredData, { new: true });
       if (!user) {
-        return { status: 404, message: 'User not found' };
+        return { status: 404, message: 'User not found', };
       }
 
       return { status: 200, message: 'User updated successfully', user };

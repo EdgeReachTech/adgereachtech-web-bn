@@ -1,11 +1,12 @@
 import express from "express";
 import { userController } from "../controllers/userControllers";
-import auth from "../middleware/authorisation";
+import { validateUser } from "../validations/userValidation";
+import { verifyToken } from "../middleware/authentication";
 
 export const userRouter = express.Router()
 
-userRouter.post('/register', userController.registerUser);
-userRouter.get('/log-in', userController.login);
-userRouter.put('/update-user/:id',auth, userController.updateUser);
+userRouter.post('/register', validateUser, userController.registerUser);
+userRouter.post('/login', userController.login);
+userRouter.put('/updateUser',verifyToken, userController.updateUser);
 userRouter.delete('/delete-user/:id', userController.deleteUser);
 userRouter.get('/verify-user/:id', userController.verifyUser);
