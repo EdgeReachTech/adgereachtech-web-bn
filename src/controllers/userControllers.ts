@@ -29,7 +29,7 @@ export class userController {
             return res.status(401).json({ message: "Failed to login" });
          }
 
-         const token = user.decoded;
+         const token = user.token;
 
          return res.status(user.status).json({ message: user.message, token });
 
@@ -38,8 +38,8 @@ export class userController {
       }
    }
 
-   static updateUser = async (req: Request, res: Response) => {
-      const userId = req.params.id;
+   static updateUser = async (req: any, res: Response) => {
+      const userId = req.user
       const updatedData = req.body;
 
       try {

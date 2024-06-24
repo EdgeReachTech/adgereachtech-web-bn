@@ -3,7 +3,7 @@ import User from "../models/User"
 import VerificationToken from "../models/verification"
 import { verificationTemplates } from "../utils/emailTempletes"
 import { comparePassword } from "../utils/passwordUtils"
-import { decodeToken, generateToken, generateVerificationToken } from "../utils/tokenUtils"
+import { decodeToken, generateToken } from "../utils/tokenUtils"
 
 export class userService {
 
@@ -19,13 +19,13 @@ export class userService {
         return ({ status: 401, message: 'failed to register user' })
       }
 
-      const verificationToken = await generateVerificationToken(createdUser.email);
+      const verificationToken =  generateToken(createdUser);
 
       let mailOptions = {
         from: process.env.OUR_EMAIL as string,
         to: createdUser.email,
         subject: 'Verify Account',
-        html: verificationTemplates(createdUser, verificationToken.token)
+        html: verificationTemplates(createdUser, verificationToken)
       };
       await sendMessage(mailOptions);
 
@@ -49,21 +49,20 @@ export class userService {
       }
 
       if (!userExist.isVerified) {
-        const verificationToken = await generateVerificationToken(userExist.email);
+        const verificationToken = generateToken(userExist);
         let mailOptions = {
           from: process.env.OUR_EMAIL as string,
           to: userExist.email,
           subject: 'Verify Account',
-          html: verificationTemplates(userExist, verificationToken.token)
+          html: verificationTemplates(userExist, verificationToken)
         };
         await sendMessage(mailOptions);
-        return { status: 200, message: 'check email for account verification' };
+        return { status: 200, message: 'your are not verified. check email for account verification' };
       }
 
       const token = generateToken(userExist);
-      const decoded = decodeToken(token);
 
-      return { status: 200, message: 'Logged in successfully', decoded };
+      return { status: 200, message: 'Logged in successfully', token };
     } catch (error: any) {
       console.error(error);
       return { status: 500, message: `Error: ${error.message}` };
