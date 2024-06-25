@@ -1,9 +1,9 @@
 import { sendMessage } from "../helpers/sendEmail"
-import User from "../models/User"
+import User, { interUser } from "../models/User"
 import VerificationToken from "../models/verification"
 import { verificationTemplates } from "../utils/emailTempletes"
 import { comparePassword } from "../utils/passwordUtils"
-import { decodeToken, generateToken, generateVerificationToken } from "../utils/tokenUtils"
+import { decodeToken, generateToken, getUserToken } from "../utils/tokenUtils"
 
 export class userService {
 
@@ -19,17 +19,17 @@ export class userService {
         return ({ status: 401, message: 'failed to register user' })
       }
 
-      const verificationToken = await generateVerificationToken(createdUser.email);
+      const verificationToken = generateToken(createdUser);
 
       let mailOptions = {
         from: process.env.OUR_EMAIL as string,
         to: createdUser.email,
         subject: 'Verify Account',
-        html: verificationTemplates(createdUser, verificationToken.token)
+        html: verificationTemplates(createdUser, verificationToken)
       };
       await sendMessage(mailOptions);
 
-      return ({ status: 200, message: `user created, check email for account verification ` })
+      return ({ status: 200, message: `user created, check email for account verification `, verificationToken })
     }
     catch (error: any) {
       console.log(error)
@@ -49,34 +49,40 @@ export class userService {
       }
 
       if (!userExist.isVerified) {
-        const verificationToken = await generateVerificationToken(userExist.email);
+        const verificationToken = generateToken({
+          _id: userExist._id,
+          email: userExist.email
+        })
         let mailOptions = {
           from: process.env.OUR_EMAIL as string,
           to: userExist.email,
           subject: 'Verify Account',
-          html: verificationTemplates(userExist, verificationToken.token)
+          html: verificationTemplates(userExist, verificationToken)
         };
         await sendMessage(mailOptions);
-        return { status: 200, message: 'check email for account verification' };
+        return { status: 200, message: 'your are not verified. check email for account verification' };
       }
 
-      const token = generateToken(userExist);
-      const decoded = decodeToken(token);
+      const user = {
+        _id: userExist._id,
+        email: userExist.email,
+      };
+      const token = generateToken(user)
 
-      return { status: 200, message: 'Logged in successfully', decoded };
+      return { status: 200, message: 'Logged in successfully', token };
     } catch (error: any) {
       console.error(error);
       return { status: 500, message: `Error: ${error.message}` };
     }
   }
 
-  static updateUser = async (userId: string, updatedData: any) => {
+  static updateUser = async (userData: any, updatedData: any) => {
     // Exclude email and password from updatedData
     const { email, password, ...filteredData } = updatedData;
     try {
-      const user = await User.findByIdAndUpdate(userId, filteredData, { new: true });
+      const user = await User.findByIdAndUpdate(userData._id, filteredData, { new: true });
       if (!user) {
-        return { status: 404, message: 'User not found' };
+        return { status: 404, message: 'User not found', };
       }
 
       return { status: 200, message: 'User updated successfully', user };
@@ -98,20 +104,22 @@ export class userService {
     }
   }
 
-  static verifyUser = async (userId: string, token: string) => {
+  static verifyUser = async (token: any) => {
+    const decodedToken = getUserToken(token);
+    if (!decodedToken || !decodedToken.user || !decodedToken.user._id) {
+      return { status: 400, message: 'Invalid token' };
+    }
+
+    const userId = decodedToken.user._id;
     try {
       const user = await User.findById(userId);
       if (!user) {
         return { status: 404, message: 'User not found' };
       }
 
-      const verificationToken = await VerificationToken.findOne({ email: user.email, token });
+      const verificationToken = generateToken(user);
       if (!verificationToken) {
         return { status: 400, message: 'Invalid or missing verification token' };
-      }
-
-      if (verificationToken.expiresAt < new Date()) {
-        return { status: 400, message: 'Verification token has expired' };
       }
 
       if (user.isVerified) {
@@ -121,7 +129,6 @@ export class userService {
       user.isVerified = true;
       user.verifiedAt = new Date();
       await user.save();
-      await VerificationToken.deleteOne({ email: user.email, token }); // Optionally delete the token after verification
 
       return { status: 200, message: 'User verified successfully' };
     } catch (error) {

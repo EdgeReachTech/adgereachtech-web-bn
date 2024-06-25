@@ -1,36 +1,40 @@
-import jwt from 'jsonwebtoken'
-import { v4 as uuidv4 } from 'uuid';
-import VerificationToken from '../models/verification';
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
-export const generateVerificationToken = async (email: string) => {
-    const token = uuidv4();
-    const expiresAt = new Date(Date.now() + 3600 * 1000); // 1 hour from now
 
-    const existingToken = await VerificationToken.findOne({ email });
-    if (existingToken) {
-        await VerificationToken.deleteOne({ email });
+export const generateToken = (user: any): string | { status: number; message: string } => {
+    try {
+        const token = jwt.sign({ user }, process.env.SECRET_KEY as string, { expiresIn: '24h' })
+        return token;
     }
-
-    const verificationToken = new VerificationToken({
-        email,
-        token,
-        expiresAt
-    });
-
-    await verificationToken.save();
-    return verificationToken;
-};
-
-
-export const generateToken = (user: any) => {
-    const token = jwt.sign({ user }, process.env.SECRET_KEY as string, { expiresIn: '24h' })
-    return token;
+    catch (error: any) {
+        return ({ status: 500, message: `Error: ${error.message} happened` })
+    }
 }
 
-export const decodeToken = (token: any) => {
+export const decodeToken = (token: string) => {
+    console.log('Token received for decoding:', token);
+    if (typeof token !== 'string') {
+        console.log('Token is not a string:', token);
+        return null;
+    }
+
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY!);
+        const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
         return decoded;
+    } catch (error) {
+        console.log('Error decoding token:', error);
+        return null;
+    }
+};
+
+export const getUserToken = (token: string) => {
+    if (typeof token !== 'string') {
+        return null;
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
+        return decoded as JwtPayload;
     } catch (error) {
         return null;
     }
