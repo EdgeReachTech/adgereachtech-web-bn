@@ -1,9 +1,8 @@
 import { sendMessage } from "../helpers/sendEmail"
-import User, { interUser } from "../models/User"
-import VerificationToken from "../models/verification"
+import User from "../models/User"
 import { verificationTemplates } from "../utils/emailTempletes"
 import { comparePassword } from "../utils/passwordUtils"
-import { decodeToken, generateToken, getUserToken } from "../utils/tokenUtils"
+import { generateToken, getUserToken } from "../utils/tokenUtils"
 
 export class userService {
 
@@ -49,6 +48,7 @@ export class userService {
       }
 
       if (!userExist.isVerified) {
+
         const verificationToken = generateToken({
           _id: userExist._id,
           email: userExist.email
@@ -58,17 +58,21 @@ export class userService {
           to: userExist.email,
           subject: 'Verify Account',
           html: verificationTemplates(userExist, verificationToken)
+          
         };
         await sendMessage(mailOptions);
         return { status: 200, message: 'your are not verified. check email for account verification' };
+        return { status: 200, message: 'your are not verified. check email for account verification' };
       }
 
+      
       const user = {
         _id: userExist._id,
         email: userExist.email,
       };
       const token = generateToken(user)
 
+      return { status: 200, message: 'Logged in successfully', token };
       return { status: 200, message: 'Logged in successfully', token };
     } catch (error: any) {
       console.error(error);
@@ -83,6 +87,7 @@ export class userService {
       const user = await User.findByIdAndUpdate(userData._id, filteredData, { new: true });
       if (!user) {
         return { status: 404, message: 'User not found', };
+        
       }
 
       return { status: 200, message: 'User updated successfully', user };

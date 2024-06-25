@@ -1,14 +1,15 @@
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
 
-export const generateToken = (user: any): string | { status: number; message: string } => {
-    try {
-        const token = jwt.sign({ user }, process.env.SECRET_KEY as string, { expiresIn: '24h' })
-        return token;
-    }
-    catch (error: any) {
-        return ({ status: 500, message: `Error: ${error.message} happened` })
-    }
+
+export const generateToken = (user: any) => {
+    try{
+    const token = jwt.sign({ user }, process.env.SECRET_KEY as string, { expiresIn: '24h' })
+    return token;
+}
+catch(error:any){
+    return ({status:500, messag:`Error: ${error.message} happened`})
+}
 }
 
 export const decodeToken = (token: string) => {
@@ -36,6 +37,7 @@ export const getUserToken = (token: string) => {
         const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
         return decoded as JwtPayload;
     } catch (error) {
-        return null;
+       console.log(error, token)
     }
 };
+
