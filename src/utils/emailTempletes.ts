@@ -1,6 +1,6 @@
-export const verificationTempletes =(user:any,token:any)=>{
- return(
-    `<!DOCTYPE html>
+export const verificationTemplates = (user: any, token: any) => {
+    return (
+        `<!DOCTYPE html>
     <html>
     <head>
         <meta charset="UTF-8">
@@ -27,7 +27,7 @@ export const verificationTempletes =(user:any,token:any)=>{
             }
             a{
                 background-color:#0000cc;
-                color:#FFFFFF;
+                color:#FFFF;
                 padding:12px;
                 margin:0 auto;
                 text-decoration:none
@@ -44,7 +44,7 @@ export const verificationTempletes =(user:any,token:any)=>{
             </div>
             <div class="email-body">
                 <p>Hello, ${user.firstName}</p>
-                <p>Thank you for joining our service. Click this button to verify your account</p>
+                <p>${token} Thank you for joining our service. Click this button to verify your account</p>
                <a href="${process.env.FRONT_END_URI as string}/user/verify?${token}"> Verify your Account</a>
                 <p>Best Regards,<br> Edge Reach Tech Team</p>
             </div>
@@ -55,5 +55,5 @@ export const verificationTempletes =(user:any,token:any)=>{
     </body>
     </html>
     `
- )
+    )
 }
