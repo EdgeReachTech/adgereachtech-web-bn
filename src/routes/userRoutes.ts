@@ -7,6 +7,6 @@ export const userRouter = express.Router()
 
 userRouter.post('/register', validateUser, userController.registerUser);
 userRouter.post('/login', userController.login);
-userRouter.put('/updateUser',verifyToken, userController.updateUser);
-userRouter.delete('/delete-user/:id', userController.deleteUser);
-userRouter.get('/verify-user/:id', userController.verifyUser);
+userRouter.put('/updateUser', verifyToken, userController.updateUser);
+userRouter.delete('/delete-user/:token', userController.deleteUser);
+userRouter.get('/verify-user/:token', userController.verifyUser);

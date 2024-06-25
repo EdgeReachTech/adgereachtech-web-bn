@@ -13,7 +13,7 @@ export class userController {
          if (!user || undefined) {
             res.status(401).json({ message: "failed to register users" })
          }
-         res.status(user?.status as number).json({ message: user?.message })
+         res.status(user?.status as number).json({ message: user?.message, token: user?.verificationToken })
 
       }
       catch (error: any) {
@@ -62,13 +62,12 @@ export class userController {
    }
 
    static verifyUser = async (req: Request, res: Response) => {
-      const userId = req.params.id;
-      const token = req.query.token as string;
+      const token = req.params.token;
       try {
-         const result = await userService.verifyUser(userId, token);
-         if (!result) return res.status(404).json({ message: 'User not found' });
+         const result = await userService.verifyUser(token);
+         if (!result) return res.status(404).json({ message: 'User not found here' });
 
-         return res.status(result?.status).json({ message: result?.message })
+         return res.status(result?.status).json({ message: result?.message, })
       } catch (error) {
          return res.status(500).json({ error: `Error ${error} happened` });
       }
