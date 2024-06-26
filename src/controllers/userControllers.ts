@@ -149,4 +149,5 @@ export class userController {
       res.status(500).json({ message: `Error ${error.message} happened while reset password` })
     }
   }
+
 }
