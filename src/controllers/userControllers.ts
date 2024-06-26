@@ -149,26 +149,4 @@ export class userController {
       res.status(500).json({ message: `Error ${error.message} happened while reset password` })
     }
   }
-  // static changeUserPassword = async (req: Request, res: Response) => {
-  //   try {
-  //     const token = req.params.token;
-  //     const { currentPassword, newPassword } = req.body;
-
-  //     const userData = decodeToken(token)._d;
-  //     const user = await User.findOne(userData);
-  //     if (!user) return res.status(401).json({ message: "Invalid call", userData: userData });
-
-  //     const verifyPassword = bcrypt.compare(currentPassword, user?.password);
-  //     if (!verifyPassword) return res.status(401).json({ message: "Invalid password" });
-
-  //     const userId = user.id;
-  //     const hashedPassword = await hashingPassword(newPassword) as string;
-
-  //     const result = await userService.changePassword(hashedPassword, userId);
-  //     res.status(401).json({ message: result.message });
-  //   } catch (error: any) {
-  //     res.status(500).json({ message: `Error ${error.message} happened while reset password` })
-  //   }
-  // }
-
 }
