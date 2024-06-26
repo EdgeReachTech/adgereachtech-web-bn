@@ -17,8 +17,8 @@ export const decodeToken = (token: string) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
-    return decoded;
+    const decoded:JwtPayload = jwt.verify(token, process.env.SECRET_KEY as string) as JwtPayload;
+    return decoded.user;
   } catch (error) {
     return null;
   }

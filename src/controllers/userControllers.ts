@@ -40,7 +40,7 @@ export class userController {
 
   static updateUser = async (req: any, res: Response) => {
     try {
-      const user = req.user.user;
+      const user = req.user;
       const updatedData = req.body;
 
       const {
