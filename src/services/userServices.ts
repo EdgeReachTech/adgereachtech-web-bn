@@ -146,14 +146,15 @@ export class userService {
       return { status: 500, message: `Error: ${error} happened` };
     }
   };
-  static changePassword = async(newpassword: string, userData: any) => {
+
+  static changePassword = async (newpassword: string, userData: any) => {
     try {
       const user = await User.findOneAndUpdate(userData._id, {
         password: newpassword,
       });
       if (!user) return { status: 404, message: "user not found" };
-    return { status: 200, message: `password changed succesfully ` };
-    
+      return { status: 200, message: `password changed succesfully ` };
+
     } catch (error: any) {
       return {
         status: 500,

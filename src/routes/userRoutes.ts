@@ -1,6 +1,6 @@
 import express from "express";
 import { userController } from "../controllers/userControllers";
-import { validateUser } from "../validations/userValidation";
+import { validateChangeUserPassword, validateUser } from "../validations/userValidation";
 import { isLoggedIn } from "../middleware/authentication";
 
 export const userRouter = express.Router();
@@ -12,3 +12,4 @@ userRouter.delete("/delete/:id", userController.deleteUser);
 userRouter.get("/verify/:token", userController.verifyUser);
 userRouter.get("/forgotPassword", userController.forgotPassword)
 userRouter.patch("/resetPassword/:token", userController.resetPassword)
+userRouter.patch("/changePassword/:token", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);

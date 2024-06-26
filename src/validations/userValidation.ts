@@ -31,11 +31,24 @@ export const validateUser = [
   check('password')
     .isStrongPassword().withMessage('Password must be strong, containing special char, Upper case letter and at least 8 words'),
 
-    (req: Request, res: Response, next: NextFunction) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-      }
-    ];
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }
+];
+
+export const validateChangeUserPassword = [
+  check('newPassword')
+    .isStrongPassword().withMessage('Password must be strong, containing special char, Upper case letter and at least 8 words'),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }
+];
