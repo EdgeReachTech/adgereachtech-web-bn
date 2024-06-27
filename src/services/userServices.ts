@@ -30,7 +30,7 @@ export class userService {
 
       return {
         status: 200,
-        message: `user created, check email for account verification `,
+        message: `user created, check email for account verification ${verificationToken}`,
       };
     } catch (error: any) {
       console.log(error);
@@ -115,15 +115,15 @@ export class userService {
 
   static verifyUser = async (token: any) => {
     const decodedToken = decodeToken(token) as JwtPayload;
-    if (!decodedToken || !decodedToken.user || !decodedToken.user._id) {
-      return { status: 400, message: "Invalid token" };
+    if (!decodedToken) {
+      return { status: 400, message: `Invalid token ${token}` };
     }
 
-    const userId = decodedToken.user._id;
+    const userId = decodedToken._id;
     try {
       const user = await User.findById(userId);
       if (!user) {
-        return { status: 404, message: "User not found" };
+        return { status: 404, message: `User not found ${userId}` };
       }
 
       const verificationToken = generateToken(user);
