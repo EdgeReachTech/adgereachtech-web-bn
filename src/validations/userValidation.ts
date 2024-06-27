@@ -52,3 +52,24 @@ export const validateChangeUserPassword = [
     next();
   }
 ];
+export const validateRole = [
+  check("role").notEmpty().withMessage('role must be not empty')
+    .isIn([
+      "developer",
+      "President",
+      "Project Manager",
+      "Quality Assurence",
+      "Vice President",
+    ])
+    .withMessage(
+      "invalid you put 'develope', 'President', 'Project Manager', 'Quality Assurence', 'Vice President'"
+    ),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];

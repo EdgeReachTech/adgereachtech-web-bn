@@ -149,4 +149,41 @@ export class userController {
       res.status(500).json({ message: `Error ${error.message} happened while reset password` })
     }
   }
+  static blockUser = async (req: any, res: Response) =>{
+    try{
+      const userId = req.params.id
+      const blockUser = await userService.blockUser(userId)
+      if(!blockUser)
+        res.status(400).json({message:"failed to block user"})
+      res.status(blockUser.status).json({message:blockUser.message})
+    }
+    catch(error:any){
+      res.status(500).json({message:`Found error ${error.message}`})
+    }
+  }
+  static unBlockuser = async (req: any, res: Response) =>{
+    try{
+      const userId = req.params.id
+      const blockUser = await userService.unBlockUser(userId)
+      if(!blockUser)
+        res.status(400).json({message:"failed to unblock user"})
+      res.status(blockUser.status).json({message:blockUser.message})
+    }
+    catch(error:any){
+      res.status(500).json({message:`Found error ${error.message}`})
+    }
+  }
+  static changeRole = async (req: any, res: Response) =>{
+    try{
+      const userId = req.params.id
+      const role = req.body.role
+      const changeRole = await userService.changeRole(userId,role)
+      if(!changeRole)
+        res.status(400).json({message:"failed to unblock user"})
+      res.status(changeRole.status).json({message:changeRole.message})
+    }
+    catch(error:any){
+      res.status(500).json({message:`Found error ${error.message}`})
+    }
+  }
 }
