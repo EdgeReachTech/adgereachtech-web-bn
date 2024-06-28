@@ -37,8 +37,9 @@ const userSchema = new Schema<interUser>({
       "Project Manager",
       "Quality Assurence",
       "Vice President",
+      "collaborator"
     ],
-    default: "developer",
+    default: "collaborator",
   },
   gender: {
     type: String,
