@@ -12,7 +12,7 @@ export const validateUser = [
   check('lastName')
     .trim()
     .notEmpty().withMessage('Last name is required')
-    .isAlpha().withMessage('Last name must only contain letters'),
+    .isAlpha('en-US',{ignore:' '}).withMessage('Last name must only contain letters'),
 
   check('email')
     .isEmail().withMessage('Email is invalid'),

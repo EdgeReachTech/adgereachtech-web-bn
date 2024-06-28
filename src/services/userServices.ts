@@ -30,7 +30,7 @@ export class userService {
 
       return {
         status: 200,
-        message: `user created, check email for account verification ${verificationToken}`,
+        message: `user created, check email for account verification `,
       };
     } catch (error: any) {
       console.log(error);
