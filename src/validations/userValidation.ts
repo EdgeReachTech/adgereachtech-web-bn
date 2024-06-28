@@ -12,7 +12,7 @@ export const validateUser = [
   check('lastName')
     .trim()
     .notEmpty().withMessage('Last name is required')
-    .isAlpha().withMessage('Last name must only contain letters'),
+    .isAlpha('en-US',{ignore:' '}).withMessage('Last name must only contain letters'),
 
   check('email')
     .isEmail().withMessage('Email is invalid'),
@@ -75,6 +75,19 @@ export const validatePortfolio = [
   check('linkToSite')
     .optional()
     .isURL().withMessage('Link to site must be a valid URL'),
+  
+export const validateRole = [
+  check("role").notEmpty().withMessage('role must be not empty')
+    .isIn([
+      "developer",
+      "President",
+      "Project Manager",
+      "Quality Assurence",
+      "Vice President",
+    ])
+    .withMessage(
+      "invalid you put 'develope', 'President', 'Project Manager', 'Quality Assurence', 'Vice President'"
+    ),
 
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
@@ -89,3 +102,5 @@ export const validatePortfolio = [
 //   const portfolioData = req.body;
 //   return res.status(200).json({ message: "Portfolio created successfully", portfolioData: portfolioData });
 // }
+  },
+];
