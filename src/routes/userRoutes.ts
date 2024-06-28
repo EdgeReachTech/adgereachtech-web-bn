@@ -13,3 +13,4 @@ userRouter.get("/verify/:token", userController.verifyUser);
 userRouter.get("/forgotPassword", userController.forgotPassword)
 userRouter.patch("/resetPassword/:token", userController.resetPassword)
 userRouter.patch("/changePassword", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
+userRouter.patch("/resetPassword/:token", userController.resetPassword) //RESET PASSWORD ENDPOINT
