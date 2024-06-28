@@ -1,5 +1,5 @@
 export const verificationTemplates = (user: any, token: any) => {
-  return `<!DOCTYPE html>
+    return `<!DOCTYPE html>
     <html>
     <head>
         <meta charset="UTF-8">
@@ -44,9 +44,8 @@ export const verificationTemplates = (user: any, token: any) => {
             <div class="email-body">
                 <p>Hello, ${user.firstName}</p>
                 <p> Thank you for joining our service. Click this button to verify your account</p>
-               <a href="${
-                 process.env.FRONT_END_URI as string
-               }/user/verify/${token}"> Verify your Account</a>
+               <a href="${process.env.FRONT_END_URI as string
+        }/user/verify/${token}"> Verify your Account</a>
                 <p>Best Regards,<br> Edge Reach Tech Team</p>
             </div>
             <div class="email-footer">
@@ -57,8 +56,9 @@ export const verificationTemplates = (user: any, token: any) => {
     </html>
     `;
 };
+
 export const resetTemplates = (user: any, token: any) => {
-  return `<!DOCTYPE html>
+    return `<!DOCTYPE html>
     <html>
     <head>
         <meta charset="UTF-8">
@@ -103,9 +103,8 @@ export const resetTemplates = (user: any, token: any) => {
             <div class="email-body">
                 <p>Hello, ${user}</p>
                 <p> it seems like you are trying to reset your password click libk below to reset password </p>
-               <a href="${
-                 process.env.FRONT_END_URI as string
-               }/user/resetPassword/${token}"> Reset password</a>
+               <a href="${process.env.FRONT_END_URI as string
+        }/user/resetPassword/${token}"> Reset password</a>
 
                 <p> if it is not you ignore this email</p>
                 <p>Best Regards,<br> Edge Reach Tech Team</p>

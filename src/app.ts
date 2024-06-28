@@ -2,6 +2,7 @@ import connection from './config/db';
 import express from 'express';
 import dotenv from 'dotenv';
 import { userRouter } from './routes/userRoutes';
+import { portfolioRouter } from './routes/portfolioRoutes';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
+app.use("/portfolio", portfolioRouter);
 
 app.listen(PORT, () => {
     console.log(`app is listening to http://localhost:${PORT}`);
