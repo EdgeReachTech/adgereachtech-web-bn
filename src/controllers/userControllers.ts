@@ -90,60 +90,77 @@ export class userController {
 
   static forgotPassword = async (req: Request, res: Response) => {
     try {
-      const email = req.body.email
+      const email = req.body.email;
       let mailOptions = {
         from: process.env.OUR_EMAIL as string,
         to: email,
         subject: "Verify Account",
         html: resetTemplates(email, generateToken(email)),
       };
-      const user = await User.findOne({ email })
-      if (!user)
-        res.status(400).json({ message: 'user not found' })
+      const user = await User.findOne({ email });
+      if (!user) res.status(400).json({ message: "user not found" });
 
-      await sendEmail(mailOptions)
-      res.status(200).json({ message: 'check your email for resetting password' })
-
+      await sendEmail(mailOptions);
+      res
+        .status(200)
+        .json({ message: "check your email for resetting password" });
+    } catch (error: any) {
+      res
+        .status(500)
+        .json({
+          message: `Error ${error.message} happened while resetting password`,
+        });
     }
-    catch (error: any) {
-      res.status(500).json({ message: `Error ${error.message} happened while resetting password` })
-    }
-  }
+  };
 
   static resetPassword = async (req: Request, res: Response) => {
     try {
-      const token = req.params.token
-      const password = req.body.password as string
-      const userData = decodeToken(token)
-      const user = User.findOne({ userData })
-      if (!user)
-        res.status(400).json({ message: `email not found` })
-      const passwordChanged = await userService.changePassword(await hashingPassword(password) as string, user)
-      res.status(passwordChanged.status).json(passwordChanged.message)
-
-
+      const token = req.params.token;
+      const password = req.body.password as string;
+      const userData = decodeToken(token);
+      const user = User.findOne({ userData });
+      if (!user) res.status(400).json({ message: `email not found` });
+      const passwordChanged = await userService.changePassword(
+        (await hashingPassword(password)) as string,
+        user
+      );
+      res.status(passwordChanged.status).json(passwordChanged.message);
+    } catch (error: any) {
+      res
+        .status(500)
+        .json({
+          message: `Error ${error.message} happened while reset password`,
+        });
     }
-    catch (error: any) {
-      res.status(500).json({ message: `Error ${error.message} happened while reset password` })
-    }
-  }
+  };
 
   static changeUserPassword = async (req: any, res: Response) => {
     try {
       const { currentPassword, newPassword } = req.body;
       const user = req.user;
-      if (!user) return res.status(401).json({ message: "Invalid call", });
+      if (!user) return res.status(401).json({ message: "Invalid call" });
+      const userData = await User.findById(user._id); // check if user from token exists
+      // check if user retuned is not null
+      if (!userData) {
+        return res.status(402).json({ message: "user not found" });
+      }
+      const verifyPassword = await bcrypt.compare(
+        currentPassword,
+        userData.password // compare password form retuned user bcz in token we dont put password
+      );
+      if (!verifyPassword)
+        return res.status(401).json({ message: "Invalid current password" });
 
-      const verifyPassword = bcrypt.compare(currentPassword, user?.password);
-      if (!verifyPassword) return res.status(401).json({ message: "Invalid password" });
+      const hashedPassword = (await hashingPassword(newPassword)) as string;
 
-      const userId = user._id;
-      const hashedPassword = await hashingPassword(newPassword) as string;
-
-      const result = await userService.changePassword(hashedPassword, userId);
-      res.status(401).json({ message: result.message });
+      const result = await userService.changePassword(hashedPassword, userData); // on service function  we send user not user id
+      res.status(result.status).json({ message: result.message });
     } catch (error: any) {
-      res.status(500).json({ message: `Error ${error.message} happened while reset password` })
+      res
+        .status(500)
+        .json({
+          message: `Error ${error.message} happened while reset password`,
+        });
     }
-  }
+  };
 }
