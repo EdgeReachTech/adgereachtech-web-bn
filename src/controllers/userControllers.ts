@@ -5,6 +5,7 @@ import User from "../models/User";
 import { sendEmail } from "../helpers/sendEmail";
 import { resetTemplates, verificationTemplates } from "../utils/emailTempletes";
 import { decodeToken, generateToken } from "../utils/tokenUtils";
+import bcrypt from "bcrypt";
 
 export class userController {
   static registerUser = async (req: Request, res: Response) => {
@@ -86,8 +87,9 @@ export class userController {
       return res.status(500).json({ error: `Error ${error} happened` });
     }
   };
-  static forgotPassword = async(req:Request, res:Response) =>{
-   try{
+
+  static forgotPassword = async (req: Request, res: Response) => {
+    try {
       const email = req.body.email
       let mailOptions = {
         from: process.env.OUR_EMAIL as string,
@@ -95,33 +97,93 @@ export class userController {
         subject: "Verify Account",
         html: resetTemplates(email, generateToken(email)),
       };
-      const user = await User.findOne({email})
-      if(!user)
-         res.status(400).json({message:'user not found'})
-      
+      const user = await User.findOne({ email })
+      if (!user)
+        res.status(400).json({ message: 'user not found' })
+
       await sendEmail(mailOptions)
-      res.status(200).json({message:'check your email for resetting password'})
+      res.status(200).json({ message: 'check your email for resetting password' })
 
-   }
-   catch(error:any){
-      res.status(500).json({message:`Error ${error.message} happend while resetting password`})
-   }
+    }
+    catch (error: any) {
+      res.status(500).json({ message: `Error ${error.message} happened while resetting password` })
+    }
   }
-  static resetPassword  = async(req:Request,res:Response) =>{
-   try{
-   const token = req.params.token
-   const password = req.body.password as string
-   const userData = decodeToken(token)
-   const user = User.findOne({userData})
-   if(!user)
-      res.status(400).json({message:`email not found`})
-    const passwordChanged = await userService.changePassword(await hashingPassword(password) as string ,user)
-    res.status(passwordChanged.status).json(passwordChanged.message)
 
-   
-}
-catch(error:any){
-   res.status(500).json({message:`Error ${error.message} happened while reset password`})
-}
+  static resetPassword = async (req: Request, res: Response) => {
+    try {
+      const token = req.params.token
+      const password = req.body.password as string
+      const userData = decodeToken(token)
+      const user = User.findOne({ userData })
+      if (!user)
+        res.status(400).json({ message: `email not found` })
+      const passwordChanged = await userService.changePassword(await hashingPassword(password) as string, user)
+      res.status(passwordChanged.status).json(passwordChanged.message)
+
+
+    }
+    catch (error: any) {
+      res.status(500).json({ message: `Error ${error.message} happened while reset password` })
+    }
+  }
+
+  static changeUserPassword = async (req: Request, res: Response) => {
+    try {
+      const token = req.params.token;
+      const { currentPassword, newPassword } = req.body;
+
+      const userData = decodeToken(token)._d;
+      const user = await User.findOne(userData);
+      if (!user) return res.status(401).json({ message: "Invalid call", userData: userData });
+
+      const verifyPassword = bcrypt.compare(currentPassword, user?.password);
+      if (!verifyPassword) return res.status(401).json({ message: "Invalid password" });
+
+      const userId = user.id;
+      const hashedPassword = await hashingPassword(newPassword) as string;
+
+      const result = await userService.changePassword(hashedPassword, userId);
+      res.status(401).json({ message: result.message });
+    } catch (error: any) {
+      res.status(500).json({ message: `Error ${error.message} happened while reset password` })
+    }
+  }
+  static blockUser = async (req: any, res: Response) =>{
+    try{
+      const userId = req.params.id
+      const blockUser = await userService.blockUser(userId)
+      if(!blockUser)
+        res.status(400).json({message:"failed to block user"})
+      res.status(blockUser.status).json({message:blockUser.message})
+    }
+    catch(error:any){
+      res.status(500).json({message:`Found error ${error.message}`})
+    }
+  }
+  static unBlockuser = async (req: any, res: Response) =>{
+    try{
+      const userId = req.params.id
+      const blockUser = await userService.unBlockUser(userId)
+      if(!blockUser)
+        res.status(400).json({message:"failed to unblock user"})
+      res.status(blockUser.status).json({message:blockUser.message})
+    }
+    catch(error:any){
+      res.status(500).json({message:`Found error ${error.message}`})
+    }
+  }
+  static changeRole = async (req: any, res: Response) =>{
+    try{
+      const userId = req.params.id
+      const role = req.body.role
+      const changeRole = await userService.changeRole(userId,role)
+      if(!changeRole)
+        res.status(400).json({message:"failed to unblock user"})
+      res.status(changeRole.status).json({message:changeRole.message})
+    }
+    catch(error:any){
+      res.status(500).json({message:`Found error ${error.message}`})
+    }
   }
 }

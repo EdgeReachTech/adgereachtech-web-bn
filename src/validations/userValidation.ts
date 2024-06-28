@@ -12,7 +12,7 @@ export const validateUser = [
   check('lastName')
     .trim()
     .notEmpty().withMessage('Last name is required')
-    .isAlpha().withMessage('Last name must only contain letters'),
+    .isAlpha('en-US',{ignore:' '}).withMessage('Last name must only contain letters'),
 
   check('email')
     .isEmail().withMessage('Email is invalid'),
@@ -31,11 +31,45 @@ export const validateUser = [
   check('password')
     .isStrongPassword().withMessage('Password must be strong, containing special char, Upper case letter and at least 8 words'),
 
-    (req: Request, res: Response, next: NextFunction) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-      }
-    ];
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }
+];
+
+export const validateChangeUserPassword = [
+  check('newPassword')
+    .isStrongPassword().withMessage('Password must be strong, containing special char, Upper case letter and at least 8 words'),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  }
+];
+export const validateRole = [
+  check("role").notEmpty().withMessage('role must be not empty')
+    .isIn([
+      "developer",
+      "President",
+      "Project Manager",
+      "Quality Assurence",
+      "Vice President",
+    ])
+    .withMessage(
+      "invalid you put 'develope', 'President', 'Project Manager', 'Quality Assurence', 'Vice President'"
+    ),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
