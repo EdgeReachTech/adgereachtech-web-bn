@@ -154,7 +154,6 @@ export class userService {
       });
       if (!user) return { status: 404, message: "user not found" };
       return { status: 200, message: `password changed succesfully ` };
-
     } catch (error: any) {
       return {
         status: 500,

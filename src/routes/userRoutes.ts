@@ -12,4 +12,4 @@ userRouter.delete("/delete/:id", userController.deleteUser);
 userRouter.get("/verify/:token", userController.verifyUser);
 userRouter.get("/forgotPassword", userController.forgotPassword)
 userRouter.patch("/resetPassword/:token", userController.resetPassword)
-userRouter.patch("/changePassword/:token", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
+userRouter.patch("/changePassword", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);

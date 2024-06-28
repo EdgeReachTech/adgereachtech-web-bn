@@ -53,3 +53,5 @@ const userSchema = new Schema<interUser>({
 
 const User = model<interUser>("User", userSchema);
 export default User;
+
+

@@ -128,19 +128,16 @@ export class userController {
     }
   }
 
-  static changeUserPassword = async (req: Request, res: Response) => {
+  static changeUserPassword = async (req: any, res: Response) => {
     try {
-      const token = req.params.token;
       const { currentPassword, newPassword } = req.body;
-
-      const userData = decodeToken(token)._d;
-      const user = await User.findOne(userData);
-      if (!user) return res.status(401).json({ message: "Invalid call", userData: userData });
+      const user = req.user;
+      if (!user) return res.status(401).json({ message: "Invalid call", });
 
       const verifyPassword = bcrypt.compare(currentPassword, user?.password);
       if (!verifyPassword) return res.status(401).json({ message: "Invalid password" });
 
-      const userId = user.id;
+      const userId = user._id;
       const hashedPassword = await hashingPassword(newPassword) as string;
 
       const result = await userService.changePassword(hashedPassword, userId);
