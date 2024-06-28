@@ -11,4 +11,4 @@ userRouter.put("/update", isLoggedIn, userController.updateUser);
 userRouter.delete("/delete/:id", userController.deleteUser);
 userRouter.get("/verify/:token", userController.verifyUser);
 userRouter.get("/forgotPassword", userController.forgotPassword)
-userRouter.patch("/resetPassword/:token", userController.resetPassword)
+userRouter.patch("/resetPassword/:token", userController.resetPassword) //RESET PASSWORD ENDPOINT
