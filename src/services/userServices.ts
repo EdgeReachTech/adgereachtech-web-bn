@@ -1,3 +1,4 @@
+//import modules
 import { JwtPayload } from "jsonwebtoken";
 import { sendEmail } from "../helpers/sendEmail";
 import User from "../models/User";
