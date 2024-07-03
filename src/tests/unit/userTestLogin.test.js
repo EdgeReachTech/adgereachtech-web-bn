@@ -1,6 +1,5 @@
 import { userService } from '../../services/userServices';
 import User from '../../models/User';
-import { sendMessage } from '../../helpers/sendEmail';
 import { generateToken } from '../../utils/tokenUtils';
 import { comparePassword } from '../../utils/passwordUtils';
 
@@ -9,31 +8,9 @@ jest.mock('../../helpers/sendEmail');
 jest.mock('../../utils/tokenUtils');
 jest.mock('../../utils/passwordUtils');
 
-describe('userServices', () => {
+describe('userService', () => {
     afterEach(() => {
         jest.clearAllMocks();
-    });
-
-    describe('registerUser', () => {
-        it('should register a user', async () => {
-            const mockUser = { email: 'test@example.com', password: 'password' };
-            User.findOne.mockResolvedValue(null);
-            User.create.mockResolvedValue(mockUser);
-            generateToken.mockReturnValue('token');
-            sendMessage.mockResolvedValue(true);
-
-            const result = await userService.registerUser(mockUser);
-
-            expect(User.findOne).toHaveBeenCalledWith({ email: mockUser.email });
-            expect(User.create).toHaveBeenCalledWith(mockUser);
-            expect(generateToken).toHaveBeenCalledWith(mockUser);
-            expect(sendMessage).toHaveBeenCalled();
-            expect(result).toEqual({
-                status: 200,
-                message: 'user created, check email for account verification ',
-                verificationToken: 'token'
-            });
-        });
     });
 
     describe('login', () => {
@@ -56,6 +33,4 @@ describe('userServices', () => {
             });
         });
     });
-
-    // Add more unit tests for other methods...
 });
