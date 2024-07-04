@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
-
 app.listen(PORT, () => {
     console.log(`app is listening to http://localhost:${PORT}`);
 });
+export default app;
