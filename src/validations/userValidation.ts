@@ -12,7 +12,7 @@ export const validateUser = [
   check('lastName')
     .trim()
     .notEmpty().withMessage('Last name is required')
-    .isAlpha('en-US',{ignore:' '}).withMessage('Last name must only contain letters'),
+    .isAlpha('en-US', { ignore: ' ' }).withMessage('Last name must only contain letters'),
 
   check('email')
     .isEmail().withMessage('Email is invalid'),
@@ -53,29 +53,6 @@ export const validateChangeUserPassword = [
   }
 ];
 
-export const validatePortfolio = [
-  check('title')
-    .notEmpty().withMessage('Title is required'),
-
-  check('description')
-    .notEmpty().withMessage('Description is required')
-    .isLength({ min: 1000 }).withMessage('Description must be at least 1000 characters long'),
-
-  check('date')
-    .notEmpty().withMessage('Date is required')
-    .isISO8601().withMessage('Date must be a valid date'),
-
-  check('images')
-    .isArray({ min: 1 }).withMessage('Images must be an array of strings and must contain at least one image'),
-
-  check('linkToRepo')
-    .optional()
-    .isURL().withMessage('Link to repo must be a valid URL'),
-
-  check('linkToSite')
-    .optional()
-    .isURL().withMessage('Link to site must be a valid URL'),
-  
 export const validateRole = [
   check("role").notEmpty().withMessage('role must be not empty')
     .isIn([
@@ -102,5 +79,4 @@ export const validateRole = [
 //   const portfolioData = req.body;
 //   return res.status(200).json({ message: "Portfolio created successfully", portfolioData: portfolioData });
 // }
-  },
-];
+
