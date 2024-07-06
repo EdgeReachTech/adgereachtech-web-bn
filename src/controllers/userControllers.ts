@@ -17,7 +17,7 @@ export class userController {
       userData["password"] = await hashingPassword(userData.password);
       const user = await userService.registerUser(userData);
       if (!user || undefined) {
-        res.status(401).json({ message: "failed to register users" });
+        res.status(401).json({ message: "Failed to register users" });
       }
       res.status(user?.status as number).json({ message: user?.message });
     } catch (error: any) {
