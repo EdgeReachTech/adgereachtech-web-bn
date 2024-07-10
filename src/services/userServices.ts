@@ -1,3 +1,4 @@
+//import modules
 import { JwtPayload } from "jsonwebtoken";
 import { sendEmail } from "../helpers/sendEmail";
 import User from "../models/User";
@@ -15,7 +16,7 @@ export class userService {
 
       const createdUser = await User.create(user);
       if (!createdUser) {
-        return { status: 401, message: "failed to register user" };
+        return { status: 401, message: "Failed to register user" };
       }
 
       const verificationToken = generateToken(createdUser);
@@ -30,7 +31,7 @@ export class userService {
 
       return {
         status: 200,
-        message: `user created, check email for account verification `,
+        message: `user created, check email for account verification `, verificationToken
       };
     } catch (error: any) {
       console.log(error);
