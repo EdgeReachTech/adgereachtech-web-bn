@@ -5,6 +5,9 @@ export class portfolioController {
   static createPortfolio = async (req: Request, res: Response) => {
     try {
       const data = req.body;
+      // @ts-ignore
+      const userId = req.user._id;
+      data["userId"] = userId;
 
       const portfolio = await portfolioService.createPortfolio(data);
       if (!portfolio) {
@@ -19,7 +22,8 @@ export class portfolioController {
 
   static updatePortfolio = async (req: Request, res: Response) => {
     try {
-      const userId = req.params.userId;
+      // @ts-ignore
+      const userId = req.user._id;
       const portfolioId = req.params.portfolioId;
       const bothIds = { portfolioId, userId }
 
@@ -29,7 +33,7 @@ export class portfolioController {
         res.status(404).json({ message: "Failed to update portfolio" });
       }
 
-      res.status(updatedPortfolio.status).json({ message: updatedPortfolio.message, data: bothIds });
+      res.status(updatedPortfolio.status).json({ message: updatedPortfolio.message });
     } catch (error: any) {
       res.status(500).json({ error: `Error ${error.message} happened` });
     }
@@ -37,7 +41,8 @@ export class portfolioController {
 
   static deletePortfolio = async (req: Request, res: Response) => {
     try {
-      const userId = req.params.userId;
+      // @ts-ignore
+      const userId = req.user._id;
       const portfolioId = req.params.portfolioId;
       const bothIds = { portfolioId, userId }
 
@@ -46,7 +51,7 @@ export class portfolioController {
         res.status(404).json({ message: "Fail to delete portfolio" });
       }
 
-      res.status(deletedPortfolio.status).json({ message: deletedPortfolio.message, data: bothIds });
+      res.status(deletedPortfolio.status).json({ message: deletedPortfolio.message });
     } catch (error: any) {
       res.status(500).json({ message: `Error ${error.message} happened` });
     }
