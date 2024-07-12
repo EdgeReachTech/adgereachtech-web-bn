@@ -2,6 +2,9 @@ import connection from './config/db';
 import express from 'express';
 import dotenv from 'dotenv';
 import { userRouter } from './routes/userRoutes';
+import { portfolioRouter } from './routes/portfolioRoutes';
+import { commentRouter } from './routes/commentRoutes';
+import { blogRouter } from './routes/blogsRoutes';
 
 dotenv.config();
 
@@ -16,7 +19,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
+app.use("/portfolio", portfolioRouter);
+app.use("/comment", commentRouter);
+app.use("/blog", blogRouter);
 
 app.listen(PORT, () => {
     console.log(`app is listening to http://localhost:${PORT}`);
 });
+export default app;

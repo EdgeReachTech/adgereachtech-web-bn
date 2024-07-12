@@ -37,8 +37,9 @@ const userSchema = new Schema<interUser>({
       "Project Manager",
       "Quality Assurence",
       "Vice President",
+      "collaborator"
     ],
-    default: "developer",
+    default: "collaborator",
   },
   gender: {
     type: String,
@@ -53,3 +54,5 @@ const userSchema = new Schema<interUser>({
 
 const User = model<interUser>("User", userSchema);
 export default User;
+
+

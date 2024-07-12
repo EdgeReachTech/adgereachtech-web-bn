@@ -3,19 +3,19 @@ import { userService } from "../services/userServices";
 import { hashingPassword } from "../utils/passwordUtils";
 import User from "../models/User";
 import { sendEmail } from "../helpers/sendEmail";
-import { resetTemplates, verificationTemplates } from "../utils/emailTempletes";
+// import { resetTemplates, verificationTemplates } from "../utils/emailTempletes";
 import { decodeToken, generateToken } from "../utils/tokenUtils";
 import bcrypt from "bcrypt";
+import { resetTemplates } from "../utils/emailTempletes";
 
 export class userController {
   static registerUser = async (req: Request, res: Response) => {
     try {
-      const { role, status, isVerified, verifiedAt, createdAt, ...userData } =
-        req.body;
+      const { role, status, isVerified, verifiedAt, createdAt, ...userData } = req.body;
       userData["password"] = await hashingPassword(userData.password);
       const user = await userService.registerUser(userData);
       if (!user || undefined) {
-        res.status(401).json({ message: "failed to register users" });
+        res.status(401).json({ message: "Failed to register users" });
       }
       res.status(user?.status as number).json({ message: user?.message });
     } catch (error: any) {
@@ -147,6 +147,45 @@ export class userController {
       res.status(401).json({ message: result.message });
     } catch (error: any) {
       res.status(500).json({ message: `Error ${error.message} happened while reset password` })
+    }
+  }
+
+  static blockUser = async (req: any, res: Response) => {
+    try {
+      const userId = req.params.id
+      const blockUser = await userService.blockUser(userId)
+      if (!blockUser)
+        res.status(400).json({ message: "failed to block user" })
+      res.status(blockUser.status).json({ message: blockUser.message })
+    }
+    catch (error: any) {
+      res.status(500).json({ message: `Found error ${error.message}` })
+    }
+  }
+  static unBlockuser = async (req: any, res: Response) => {
+    try {
+      const userId = req.params.id
+      const blockUser = await userService.unBlockUser(userId)
+      if (!blockUser)
+        res.status(400).json({ message: "failed to unblock user" })
+      res.status(blockUser.status).json({ message: blockUser.message })
+    }
+    catch (error: any) {
+      res.status(500).json({ message: `Found error ${error.message}` })
+
+    }
+  }
+  static changeRole = async (req: any, res: Response) => {
+    try {
+      const userId = req.params.id
+      const role = req.body.role
+      const changeRole = await userService.changeRole(userId, role)
+      if (!changeRole)
+        res.status(400).json({ message: "failed to unblock user" })
+      res.status(changeRole.status).json({ message: changeRole.message })
+    }
+    catch (error: any) {
+      res.status(500).json({ message: `Found error ${error.message}` })
     }
   }
 }

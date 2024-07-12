@@ -1,3 +1,4 @@
+//import modules
 import { JwtPayload } from "jsonwebtoken";
 import { sendEmail } from "../helpers/sendEmail";
 import User from "../models/User";
@@ -15,7 +16,7 @@ export class userService {
 
       const createdUser = await User.create(user);
       if (!createdUser) {
-        return { status: 401, message: "failed to register user" };
+        return { status: 401, message: "Failed to register user" };
       }
 
       const verificationToken = generateToken(createdUser);
@@ -30,7 +31,7 @@ export class userService {
 
       return {
         status: 200,
-        message: `user created, check email for account verification `,
+        message: `user created, check email for account verification `, verificationToken
       };
     } catch (error: any) {
       console.log(error);
@@ -52,7 +53,12 @@ export class userService {
         return { status: 401, message: "Invalid credentials" };
       }
 
-      if (!userExist.isVerified) {
+      if (userExist.status === "blocked")
+        return {
+          status: 401,
+          message: "failed to login. your currently blocked to this service",
+        };
+      if (!userExist.isVerified || userExist.status === "pending") {
         const verificationToken = generateToken({
           _id: userExist._id,
           email: userExist.email,
@@ -71,11 +77,7 @@ export class userService {
         };
       }
 
-      const user = {
-        _id: userExist._id,
-        email: userExist.email,
-      };
-      const token = generateToken(user);
+      const token = generateToken(userExist);
 
       return { status: 200, message: "Logged in successfully", token };
     } catch (error: any) {
@@ -114,15 +116,15 @@ export class userService {
 
   static verifyUser = async (token: any) => {
     const decodedToken = decodeToken(token) as JwtPayload;
-    if (!decodedToken || !decodedToken.user || !decodedToken.user._id) {
-      return { status: 400, message: "Invalid token" };
+    if (!decodedToken) {
+      return { status: 400, message: `Invalid token ${token}` };
     }
 
-    const userId = decodedToken.user._id;
+    const userId = decodedToken._id;
     try {
       const user = await User.findById(userId);
       if (!user) {
-        return { status: 404, message: "User not found" };
+        return { status: 404, message: `User not found ${userId}` };
       }
 
       const verificationToken = generateToken(user);
@@ -160,6 +162,52 @@ export class userService {
         status: 500,
         message: `Error ${error.message} happened while changing password`,
       };
+    }
+  };
+  static blockUser = async (userId: any) => {
+    try {
+      const user = await User.findByIdAndUpdate(userId, { status: "blocked" });
+      if (!user) return { status: 400, message: "user not found" };
+      if (user.status === "blocked")
+        return { status: 400, message: "user already blocked" };
+      if (user.status === "pending")
+        return {
+          status: 400,
+          message: "you can block pending account. delete it instead",
+        };
+
+      return {
+        status: 200,
+        message: `You blocked ${user.firstName} successfully`,
+      };
+    } catch (error: any) {
+      return { status: 500, message: `Found error ${error.message}` };
+    }
+  };
+  static unBlockUser = async (userId: any) => {
+    try {
+      const user = await User.findByIdAndUpdate(userId, { status: "active" });
+      if (!user) return { status: 400, message: "user not found" };
+      if (user.status !== 'blocked') return { status: 400, message: "user not blocked" };
+      return {
+        status: 200,
+        message: `You unblocked ${user.firstName} successfully`,
+      };
+    } catch (error: any) {
+      return { status: 500, message: `Found error ${error.message}` };
+    }
+  };
+  static changeRole = async (userId: any, role: any) => {
+    try {
+      const user = await User.findByIdAndUpdate(userId, { role: role });
+      if (!user) return { status: 400, message: "user not found" };
+      if (user.status === 'blocked') return { status: 400, message: "user is blocked" };
+      return {
+        status: 200,
+        message: `You make ${user.firstName} ${role} successfully`,
+      };
+    } catch (error: any) {
+      return { status: 500, message: `Found error ${error.message}` };
     }
   };
 }
