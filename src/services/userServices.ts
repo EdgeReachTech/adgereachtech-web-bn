@@ -200,6 +200,9 @@ export class userService {
   static changeRole = async (userId: any, role: any) => {
     try {
       const user = await User.findByIdAndUpdate(userId, { role: role });
+  static changeRole = async (userId: any,role:any) => {
+    try {
+      const user = await User.findByIdAndUpdate(userId, { role: role});
       if (!user) return { status: 400, message: "user not found" };
       if (user.status === 'blocked') return { status: 400, message: "user is blocked" };
       return {
