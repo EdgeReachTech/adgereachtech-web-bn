@@ -197,6 +197,9 @@ export class userService {
       return { status: 500, message: `Found error ${error.message}` };
     }
   };
+  static changeRole = async (userId: any, role: any) => {
+    try {
+      const user = await User.findByIdAndUpdate(userId, { role: role });
   static changeRole = async (userId: any,role:any) => {
     try {
       const user = await User.findByIdAndUpdate(userId, { role: role});
