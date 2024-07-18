@@ -2,6 +2,7 @@ import express from "express";
 import { userController } from "../controllers/userControllers";
 // import { validateChangeUserPassword, validateUser } from "../validations/userValidation";
 import { validateChangeUserPassword, validateRole, validateUser } from "../validations/userValidation";
+import { validateChangeUserPassword, validateUser, validateRole } from "../validations/userValidation";
 import { isLoggedIn } from "../middleware/authentication";
 import { isAdmin } from "../middleware/authorisation";
 
@@ -23,4 +24,5 @@ userRouter.patch("/changePassword", isLoggedIn, validateChangeUserPassword, user
 
 userRouter.patch("/resetPassword/:token", userController.resetPassword)
 userRouter.patch("/changePassword", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
+userRouter.patch("/resetPassword/:token", userController.resetPassword) //RESET PASSWORD ENDPOINT
 userRouter.patch("/resetPassword/:token", userController.resetPassword) //RESET PASSWORD ENDPOINT
