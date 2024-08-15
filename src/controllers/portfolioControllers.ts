@@ -2,9 +2,13 @@ import { Request, Response } from "express";
 import { portfolioService } from "../services/portfolioServices";
 
 export class portfolioController {
-  static createPortfolio = async (req: Request, res: Response) => {
+  static createPortfolio = async (req:Request, res: Response) => {
     try {
       const data = req.body;
+      //@ts-ignore
+      const userId = req.user._id
+      data['userId'] = userId
+      console.log(data)
 
       const portfolio = await portfolioService.createPortfolio(data);
       if (!portfolio) {

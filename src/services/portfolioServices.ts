@@ -5,6 +5,7 @@ export class portfolioService {
   // Create portfolio
   static async createPortfolio(data: any) {
     try {
+      
       const portfolio = await Portfolio.create(data);
       if (!portfolio) {
         return { status: 404, message: "Unable to create portfolio" };
