@@ -5,6 +5,7 @@ import { userRouter } from './routes/userRoutes';
 import { portfolioRouter } from './routes/portfolioRoutes';
 import { commentRouter } from './routes/commentRoutes';
 import { blogRouter } from './routes/blogsRoutes';
+import { messageRouter } from './routes/messageRoutes';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/user', userRouter);
 app.use("/portfolio", portfolioRouter);
 app.use("/comment", commentRouter);
 app.use("/blog", blogRouter);
+app.use("/message", messageRouter);
 
 app.listen(PORT, () => {
     console.log(`app is listening to http://localhost:${PORT}`);

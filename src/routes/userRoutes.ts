@@ -25,3 +25,4 @@ userRouter.patch("/changePassword", isLoggedIn, validateChangeUserPassword, user
 userRouter.patch("/resetPassword/:token", userController.resetPassword)
 userRouter.patch("/changePassword", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
 userRouter.patch("/resetPassword/:token", userController.resetPassword) //RESET PASSWORD ENDPOINT
+userRouter.patch("/resetPassword/:token", userController.resetPassword) //RESET PASSWORD ENDPOINT
