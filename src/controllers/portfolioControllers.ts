@@ -22,8 +22,7 @@ export class portfolioController {
 
   static updatePortfolio = async (req: Request, res: Response) => {
     try {
-      // @ts-ignore
-      const userId = req.user._id;
+      const userId = req.params.userId;
       const portfolioId = req.params.portfolioId;
       const bothIds = { portfolioId, userId }
 
@@ -33,7 +32,7 @@ export class portfolioController {
         res.status(404).json({ message: "Failed to update portfolio" });
       }
 
-      res.status(updatedPortfolio.status).json({ message: updatedPortfolio.message });
+      res.status(updatedPortfolio.status).json({ message: updatedPortfolio.message, data: bothIds });
     } catch (error: any) {
       res.status(500).json({ error: `Error ${error.message} happened` });
     }
@@ -51,7 +50,7 @@ export class portfolioController {
         res.status(404).json({ message: "Fail to delete portfolio" });
       }
 
-      res.status(deletedPortfolio.status).json({ message: deletedPortfolio.message });
+      res.status(deletedPortfolio.status).json({ message: deletedPortfolio.message, data: bothIds });
     } catch (error: any) {
       res.status(500).json({ message: `Error ${error.message} happened` });
     }
