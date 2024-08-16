@@ -6,7 +6,7 @@ export interface interPortfolio extends Document {
     description: string;
     date: Date;
     likes?: number;
-    comments?: string;
+    comments?: Types.ObjectId[]; // Array of comment IDs
     images: string[];
     linkToRepo?: string;
     linkToSite?: string;
@@ -18,7 +18,7 @@ const portfolioSchema = new Schema<interPortfolio>({
     description: { type: String, required: true },
     date: { type: Date, required: true },
     likes: { type: Number, required: false },
-    comments: { type: String, required: false },
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], // Accept array of comment
     images: { type: [String], required: true },
     linkToRepo: { type: String, required: false },
     linkToSite: { type: String, required: false },
@@ -27,4 +27,3 @@ const portfolioSchema = new Schema<interPortfolio>({
 const Portfolio = model<interPortfolio>("Portfolio", portfolioSchema);
 
 export default Portfolio;
-

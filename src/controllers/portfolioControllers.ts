@@ -2,13 +2,12 @@ import { Request, Response } from "express";
 import { portfolioService } from "../services/portfolioServices";
 
 export class portfolioController {
-  static createPortfolio = async (req:Request, res: Response) => {
+  static createPortfolio = async (req: Request, res: Response) => {
     try {
       const data = req.body;
-      //@ts-ignore
-      const userId = req.user._id
-      data['userId'] = userId
-      console.log(data)
+      // @ts-ignore
+      const userId = req.user._id;
+      data["userId"] = userId;
 
       const portfolio = await portfolioService.createPortfolio(data);
       if (!portfolio) {
@@ -41,7 +40,8 @@ export class portfolioController {
 
   static deletePortfolio = async (req: Request, res: Response) => {
     try {
-      const userId = req.params.userId;
+      // @ts-ignore
+      const userId = req.user._id;
       const portfolioId = req.params.portfolioId;
       const bothIds = { portfolioId, userId }
 

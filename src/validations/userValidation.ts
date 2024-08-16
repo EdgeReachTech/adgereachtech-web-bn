@@ -74,9 +74,3 @@ export const validateRole = [
     next();
   }
 ];
-
-// export const createPortfolio = (req: Request, res: Response) => {
-//   const portfolioData = req.body;
-//   return res.status(200).json({ message: "Portfolio created successfully", portfolioData: portfolioData });
-// }
-
