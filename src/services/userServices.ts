@@ -1,3 +1,4 @@
+//import modules
 import { JwtPayload } from "jsonwebtoken";
 import { sendEmail } from "../helpers/sendEmail";
 import User from "../models/User";
@@ -15,7 +16,7 @@ export class userService {
 
       const createdUser = await User.create(user);
       if (!createdUser) {
-        return { status: 401, message: "failed to register user" };
+        return { status: 401, message: "Failed to register user" };
       }
 
       const verificationToken = generateToken(createdUser);
@@ -31,6 +32,8 @@ export class userService {
       return {
         status: 200,
         message: `user created, check email for account verification `,
+        verificationToken
+        message: `user created, check email for account verification `, verificationToken
       };
     } catch (error: any) {
       console.log(error);
@@ -155,6 +158,7 @@ export class userService {
       });
       if (!user) return { status: 404, message: "user not found" };
       return { status: 200, message: `password changed succesfully ` };
+
     } catch (error: any) {
       return {
         status: 500,
@@ -195,6 +199,13 @@ export class userService {
       return { status: 500, message: `Found error ${error.message}` };
     }
   };
+
+  static changeRole = async (userId: any, role: any) => {
+    try {
+      const user = await User.findByIdAndUpdate(userId, { role: role });
+  static changeRole = async (userId: any, role: any) => {
+    try {
+      const user = await User.findByIdAndUpdate(userId, { role: role });
   static changeRole = async (userId: any,role:any) => {
     try {
       const user = await User.findByIdAndUpdate(userId, { role: role});

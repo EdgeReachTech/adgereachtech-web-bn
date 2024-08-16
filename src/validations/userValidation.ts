@@ -12,7 +12,7 @@ export const validateUser = [
   check('lastName')
     .trim()
     .notEmpty().withMessage('Last name is required')
-    .isAlpha('en-US',{ignore:' '}).withMessage('Last name must only contain letters'),
+    .isAlpha('en-US', { ignore: ' ' }).withMessage('Last name must only contain letters'),
 
   check('email')
     .isEmail().withMessage('Email is invalid'),
@@ -52,6 +52,7 @@ export const validateChangeUserPassword = [
     next();
   }
 ];
+
 export const validateRole = [
   check("role").notEmpty().withMessage('role must be not empty')
     .isIn([
@@ -71,5 +72,5 @@ export const validateRole = [
       return res.status(400).json({ errors: errors.array() });
     }
     next();
-  },
+  }
 ];
