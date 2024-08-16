@@ -18,6 +18,4 @@ userRouter.patch("/changePassword/:token", isLoggedIn, validateChangeUserPasswor
 userRouter.patch('/block/:id', isLoggedIn, isAdmin, userController.blockUser)
 userRouter.patch('/unblock/:id', isLoggedIn, isAdmin, userController.unBlockuser)
 userRouter.patch('/changerole/:id', validateRole, isLoggedIn, isAdmin, userController.changeRole)
-userRouter.patch("/resetPassword/:token", userController.resetPassword)
-userRouter.patch("/changePassword", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
-userRouter.patch("/resetPassword/:token", userController.resetPassword) //RESET PASSWORD ENDPOINT
+
