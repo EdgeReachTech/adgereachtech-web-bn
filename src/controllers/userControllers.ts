@@ -156,7 +156,7 @@ export class userController {
 
     }
   }
-  static changeRole = async (req: any, res: Response) => {
+  static  changeRole = async (req: any, res: Response) => {
     try {
       const userId = req.params.id
       const role = req.body.role
