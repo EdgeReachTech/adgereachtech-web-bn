@@ -6,11 +6,12 @@ import { portfolioRouter } from './routes/portfolioRoutes';
 import { commentRouter } from './routes/commentRoutes';
 import { blogRouter } from './routes/blogsRoutes';
 import { messageRouter } from './routes/messageRoutes';
-
+import cors from 'cors'
 dotenv.config();
 
 const PORT = process.env.PORT;
 const app = express();
+app.use(cors())
 app.use(express.json());
 
 connection();
