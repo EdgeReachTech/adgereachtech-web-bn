@@ -11,12 +11,12 @@ userRouter.post("/login", userController.login);
 userRouter.put("/update", isLoggedIn, userController.updateUser);
 userRouter.delete("/delete/:id", userController.deleteUser);
 userRouter.get("/verify/:token", userController.verifyUser);
-userRouter.get("/forgotPassword", userController.forgotPassword)
-userRouter.patch("/resetPassword/:token", userController.resetPassword)
-userRouter.patch("/changePassword/:token", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
-
+userRouter.get("/forgot-password", userController.forgotPassword)
+userRouter.patch("/reset-password/:token", userController.resetPassword)
+userRouter.patch("/change-password/:token", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
+userRouter.get('/logged-user',isLoggedIn,userController.getUSer)
 userRouter.patch('/block/:id', isLoggedIn, isAdmin, userController.blockUser)
 userRouter.patch('/unblock/:id', isLoggedIn, isAdmin, userController.unBlockuser)
 userRouter.patch('/changerole/:id', validateRole, isLoggedIn, isAdmin, userController.changeRole)
-
+ 
 

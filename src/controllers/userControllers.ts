@@ -3,7 +3,6 @@ import { userService } from "../services/userServices";
 import { hashingPassword } from "../utils/passwordUtils";
 import User from "../models/User";
 import { sendEmail } from "../helpers/sendEmail";
-// import { resetTemplates, verificationTemplates } from "../utils/emailTempletes";
 import { decodeToken, generateToken } from "../utils/tokenUtils";
 import bcrypt from "bcrypt";
 import { resetTemplates } from "../utils/emailTempletes";
@@ -54,7 +53,7 @@ export class userController {
         createdAt,
         email,
         password,
-        ...filteredData
+        ...filteredData 
       } = updatedData;
 
       const result = await userService.updateUser(user, filteredData);
@@ -65,6 +64,16 @@ export class userController {
       return res.status(500).json({ error: `Error ${error.message} happened` });
     }
   };
+
+  static getUSer = async (req:any, res:Response) =>{
+
+const user = await User.findOne({email:req.user.email})
+if(!user){
+res.status(404).json({message:"user not found"})
+}
+res.status(200).json(user)
+
+  }
 
   static deleteUser = async (req: Request, res: Response) => {
     const userId = req.params.id;
