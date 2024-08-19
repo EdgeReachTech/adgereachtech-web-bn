@@ -71,7 +71,7 @@ export class userService {
         };
         await sendEmail(mailOptions);
         return {
-          status: 200,
+          status: 401,
           message:
             "your are not verified. check email for account verification",
         };

@@ -19,7 +19,6 @@ export const validateUser = [
 
   check('location')
     .notEmpty().withMessage('Location is required'),
-
   check('dateOfBirth')
     .optional()
     .isISO8601().withMessage('Date of birth must be a valid date, eg 2000-03-31'),

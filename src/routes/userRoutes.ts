@@ -1,6 +1,5 @@
 import express from "express";
 import { userController } from "../controllers/userControllers";
-// import { validateChangeUserPassword, validateUser } from "../validations/userValidation";
 import { validateChangeUserPassword, validateRole, validateUser } from "../validations/userValidation";
 import { isLoggedIn } from "../middleware/authentication";
 import { isAdmin } from "../middleware/authorisation";
