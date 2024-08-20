@@ -64,12 +64,24 @@ export class userController {
     }
   };
 
-  static getUSer = async (req: any, res: Response) => {
-    const user = await User.findOne({ email: req.user.email });
-    if (!user) {
-      res.status(404).json({ message: "user data not found" });
+  static getAllUser = async (req: any, res: Response) => {
+    try {
+      const user = await User.find();
+      res.status(200).json(user);
+    } catch (error:any) {
+      res.status(500).json({message:error.message})
     }
-    res.status(200).json(user);
+  };
+  static getUSer = async (req: any, res: Response) => {
+   try {
+     const user = await User.findOne({ email: req.user.email });
+     if (!user) {
+       res.status(404).json({ message: "user data not found" });
+     }
+     res.status(200).json(user);
+   } catch (error:any) {
+    res.status(500).json({message:error.message})
+   }
   };
 
   static deleteUser = async (req: Request, res: Response) => {
