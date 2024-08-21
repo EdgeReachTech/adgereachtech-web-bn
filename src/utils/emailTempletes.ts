@@ -44,7 +44,7 @@ export const verificationTemplates = (user: any, token: any) => {
           <div class="email-body">
               <p>Hello, ${user.firstName}</p>
               <p>Thank you for joining our service. Click the button below to verify your account.</p>
-              <a href="${process.env.FRONT_END_URI}/user/verify/${token}">Verify your Account</a>
+              <a href="${process.env.FRONT_END_URI}/verify/${token}">Verify your Account</a>
               <p>Best Regards,<br>Edge Reach Tech Team</p>
           </div>
           <div class="email-footer">
