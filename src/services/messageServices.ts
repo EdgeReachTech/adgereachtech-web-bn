@@ -134,4 +134,20 @@ export class messageService {
             return { status: 404, message: "Error reading message" }
         }
     }
+    static getAllMessage =async(userId:string) =>{
+        try {
+            const messages = await Message.find({
+              $or: [
+                {
+                  sender: userId,
+                  receiver: userId,
+                },
+              ],
+            });
+            return ({status:200,messages})
+        } catch (error:any) {
+           return ({status:500, error:error.message}) 
+        }
+        
+    }
 }

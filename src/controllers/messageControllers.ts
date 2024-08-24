@@ -66,4 +66,12 @@ export class messageController {
             return res.status(500).json({ error: `Error ${error.message} happened` });
         }
     }
-}
+    static getAllMessage = async (req:any, res:Response)=>{
+       try {
+         const userId = await req.user.id;
+         const message = await messageService.getAllMessage(userId);
+         res.status(message.status).json(message.messages)
+       } catch (error:any) {
+        res.status(500).json('failed to load message')
+       }
+    }}
