@@ -8,3 +8,4 @@ messageRouter.post("/createMessage/:receiverId", isLoggedIn, messageController.c
 messageRouter.patch("/updateMessage/:messageId", isLoggedIn, messageController.updateMessage);
 messageRouter.patch("readMessage/:messageId", isLoggedIn, messageController.readMessage);
 messageRouter.delete("/deleteMessage/:messageId", isLoggedIn, messageController.deleteMessage);
+messageRouter.get("/messages", isLoggedIn, messageController.getAllMessage);
