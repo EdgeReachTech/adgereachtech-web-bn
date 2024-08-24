@@ -143,7 +143,7 @@ export class messageService {
                   receiver: userId,
                 },
               ],
-            });
+            }).populate("sender receiver");
             return ({status:200,messages})
         } catch (error:any) {
            return ({status:500, error:error.message}) 
