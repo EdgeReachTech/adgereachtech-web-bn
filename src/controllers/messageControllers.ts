@@ -6,7 +6,7 @@ export class messageController {
         try {
             const data = await req.body;
             const receiverId = req.params.receiverId;
-            const userId = await (req as any).user.id;
+            const userId = await (req as any).user._id;
             data["userId"] = userId;
             data["receiverId"] = receiverId;
 
@@ -42,7 +42,7 @@ export class messageController {
     static deleteMessage = async (req: Request, res: Response) => {
         try {
             const data = await req.body;
-            const userId = await (req as any).user.id;
+            const userId = await (req as any).user._id;
             const messageId = req.params.messageId;
             data["userId"] = userId;
             data["messageId"] = messageId;

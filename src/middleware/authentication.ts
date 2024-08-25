@@ -10,7 +10,6 @@ export const isLoggedIn = (req: any, res: Response, next: NextFunction) => {
       .status(500)
       .json({
         message: "error occured login again",
-        decode: decodeToken(token),
       });
   req.user = decodeToken(token);
   next();
