@@ -5,7 +5,7 @@
   if(!user){
     res.status(401).json({message:'failed to find user data. login again'})
   }
-  if(user.role!=='President'){
+  if(user.role!=='admin'){
     res.status(401).json({message:'only Admin can perform this action'})
   }
   next();
