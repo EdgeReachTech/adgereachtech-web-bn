@@ -29,7 +29,7 @@ app.use(
 connection();
 const options = {
     definition:{
-        openapi:'1.0.0',
+        openapi:'3.0.0',
         info:{
             title:"ERT API Documantation",
             version:"1.0.0",
