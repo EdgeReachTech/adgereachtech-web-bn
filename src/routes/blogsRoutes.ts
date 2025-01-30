@@ -5,7 +5,7 @@ import { validateBlog } from "../validations/blogsValidation";
 
 export const blogRouter = express.Router();
 
-blogRouter.post("/createBlog", isLoggedIn, validateBlog, blogController.createBlog);
+blogRouter.post("/createBlog", isLoggedIn, validateBlog, blogController.createBlog);  
 /**
  * @swagger
  * /blog/createBlog:
