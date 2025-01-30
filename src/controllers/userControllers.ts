@@ -32,6 +32,10 @@ export class userController {
       }
 
       const token = user.token;
+if(!token){
+  return res.status(500).json({message:"failed to create token"});
+
+}
 
       return res.status(user.status).json({ message: user.message, token });
     } catch (error: any) {

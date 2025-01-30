@@ -44,7 +44,7 @@ export class userService {
       if (!userExist) {
         return { status: 401, message: "User does not exist" };
       }
-
+console.log(loginData)
       const passwordMatch = await comparePassword(
         loginData.password,
         userExist.password

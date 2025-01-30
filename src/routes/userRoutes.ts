@@ -8,14 +8,14 @@ export const userRouter = express.Router();
 
 userRouter.post("/register", validateUser, userController.registerUser);
 userRouter.post("/login", userController.login);
-userRouter.put("/update", isLoggedIn, userController.updateUser);
+userRouter.put("/", isLoggedIn, userController.updateUser);
 userRouter.delete("/delete/:id", userController.deleteUser);
 userRouter.get("/verify/:token", userController.verifyUser);
 userRouter.get("/forgot-password", userController.forgotPassword)
 userRouter.patch("/reset-password/:token", userController.resetPassword)
-userRouter.patch("/change-password/:token", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
-userRouter.get('/logged-user',isLoggedIn,userController.getUSer)
-userRouter.get('/all-user',isLoggedIn,userController.getAllUser)
+userRouter.put("/change-password", isLoggedIn, validateChangeUserPassword, userController.changeUserPassword);
+userRouter.get('/me',isLoggedIn,userController.getUSer)
+userRouter.get('/',isLoggedIn,userController.getAllUser)
 userRouter.patch('/block/:id', isLoggedIn, isAdmin, userController.blockUser)
 userRouter.patch('/unblock/:id', isLoggedIn, isAdmin, userController.unBlockuser)
 userRouter.patch('/changerole/:id', validateRole, isLoggedIn, isAdmin, userController.changeRole)
@@ -125,18 +125,11 @@ userRouter.patch('/changerole/:id', validateRole, isLoggedIn, isAdmin, userContr
 
   /**
    * @swagger
-   * /user/{id}:
+   * /user:
    *   put:
    *     summary: Update user information
    *     description: Allows a user to update their profile details.
    *     tags: [User]
-   *     parameters:
-   *       - in: path
-   *         name: id
-   *         required: true
-   *         schema:
-   *           type: string
-   *         description: User's unique ID
    *     requestBody:
    *       required: true
    *       content:

@@ -7,7 +7,8 @@ export const generateToken = (user: any) => {
     });
     return token;
   } catch (error: any) {
-    return { status: 500, messag: `Error: ${error.message} happened` };
+      return null
+      
   }
 };
 
