@@ -21,7 +21,7 @@ jobs:
       # Install dependencies (for Node.js backend)
       - name: Install dependencies
         run: |
-          cd backend  # Adjust this if your backend code is in a different folder
+          cd /var/www/adgereachtech-web-bn
           npm install
 
       # Copy backend files to VPS
@@ -32,7 +32,7 @@ jobs:
           host: 77.37.124.116
           username: fiacre
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./backend/"  # Copy everything from the backend folder
+          source: "./"  # 
           target: "/var/www/adgereachtech-web-bn"  # Target folder on the server
           port: 5001
 
