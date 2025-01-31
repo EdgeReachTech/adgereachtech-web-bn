@@ -72,7 +72,7 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use("/api-docs", swaggeUi.serve, swaggeUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
-  res.send("welcome to edge-reach tech website");
+  res.send("HEY I AM EDGEREACH SERVER IM DOING GREAT!!");
 });
 
 app.use("/user", userRouter);
