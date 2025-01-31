@@ -1,0 +1,53 @@
+name: Deploy to VPS (Backend)
+
+on:
+  push:
+    branches:
+      - develop  # prod repo
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Restrict Workflow to Specific Users
+        if: ${{ github.actor == 'rodriguecyber' || github.actor == 'EdgeReachTech' }}
+        run: 'echo "Workflow initiated by authorized user: ${{ github.actor }}"'
+
+      - name: Checkout code
+        if: ${{ github.actor == 'rodriguecyber' || github.actor == 'EdgeReachTech' }}
+        uses: actions/checkout@v3
+
+      # Install dependencies (for Node.js backend)
+      - name: Install dependencies
+        run: |
+          cd backend  # Adjust this if your backend code is in a different folder
+          npm install
+
+      # Copy backend files to VPS
+      - name: Copy files to VPS
+        if: ${{ github.actor == 'rodriguecyber' || github.actor == 'EdgeReachTech' }}
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: 77.37.124.116
+          username: fiacre
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "./backend/"  # Copy everything from the backend folder
+          target: "/var/www/adgereachtech-web-bn"  # Target folder on the server
+          port: 5001
+
+      # Restart the Node.js application using PM2
+      - name: Restart Application
+        if: ${{ github.actor == 'rodriguecyber' || github.actor == 'EdgeReachTech' }}
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: 77.37.124.116
+          username: fiacre
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Navigate to the project directory on the server
+            cd /var/www/adgereachtech-web-bn
+            git pull origin develop  # Pull the latest code (optional)
+            npm install  # Install dependencies on the server
+            pm2 restart bn2  # Restart your Node.js app using PM2
+          port: 5001
