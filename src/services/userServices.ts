@@ -44,7 +44,6 @@ export class userService {
       if (!userExist) {
         return { status: 401, message: "User does not exist" };
       }
-console.log(loginData)
       const passwordMatch = await comparePassword(
         loginData.password,
         userExist.password
@@ -78,6 +77,10 @@ console.log(loginData)
       }
 
       const token = generateToken(userExist);
+      if(!token){
+      return { status: 401, message: "Failed to creat token"};
+
+      }
 
       return { status: 200, message: "Logged in successfully", token };
     } catch (error: any) {

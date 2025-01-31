@@ -21,12 +21,12 @@ export const verificationTemplates = (user: any, token: any) => {
               padding: 20px;
               text-align: center;
           }
-          .email-body {
+          .email-body { 
               padding: 20px;
           }
           a {
               background-color: #0000cc;
-              color: #fff;
+              color:rgb(249, 249, 251);
               padding: 12px;
               margin: 0 auto;
               text-decoration: none;

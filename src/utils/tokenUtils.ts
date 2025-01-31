@@ -7,6 +7,7 @@ export const generateToken = (user: any) => {
     });
     return token;
   } catch (error: any) {
+    console.log(error)
       return null
       
   }
