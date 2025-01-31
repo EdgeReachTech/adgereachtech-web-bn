@@ -29,7 +29,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "./"  # 
           target: "/var/www/adgereachtech-web-bn"  # Target folder on the server
-          port: 5001
+          port: 2200
 
       # Restart the Node.js application using PM2
       - name: Restart Application
@@ -45,4 +45,4 @@ jobs:
             git pull origin develop  # Pull the latest code (optional)
             npm install  # Install dependencies on the server
             pm2 restart bn2  # Restart your Node.js app using PM2
-          port: 5001
+          port: 2200
