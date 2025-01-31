@@ -18,11 +18,6 @@ jobs:
         if: ${{ github.actor == 'rodriguecyber' || github.actor == 'EdgeReachTech' }}
         uses: actions/checkout@v3
 
-      # Install dependencies (for Node.js backend)
-      - name: Install dependencies
-        run: |
-          cd /var/www/adgereachtech-web-bn
-          npm install
 
       # Copy backend files to VPS
       - name: Copy files to VPS
