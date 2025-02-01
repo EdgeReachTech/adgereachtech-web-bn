@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import Message from "../models/Message";
 import User from "../models/User"
 
@@ -133,7 +134,7 @@ export class messageService {
             return { status: 404, message: "Error reading message" }
         }
     }
-    static getAllMessage =async(userId:string) =>{
+    static getAllMessage =async(userId:ObjectId) =>{
         try {
             const messages = await Message.find({
               $or: [
