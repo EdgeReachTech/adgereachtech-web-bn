@@ -5,12 +5,12 @@ import { isLoggedIn } from "../middleware/authentication";
 export const messageRouter = express.Router();
 
 messageRouter.post(
-  "/createMessage/:receiverId",
+  "/:receiverId",
   isLoggedIn,
   messageController.createMessage
 );
-messageRouter.patch(
-  "/updateMessage/:messageId",
+messageRouter.put(
+  "/:messageId",
   isLoggedIn,
   messageController.updateMessage
 );
@@ -20,11 +20,11 @@ messageRouter.patch(
   messageController.readMessage
 );
 messageRouter.delete(
-  "/deleteMessage/:messageId",
+  "/:messageId",
   isLoggedIn,
   messageController.deleteMessage
 );
-messageRouter.get("/messages", isLoggedIn, messageController.getAllMessage);
+messageRouter.get("/", isLoggedIn, messageController.getAllMessage);
 
 /**
  * @swagger

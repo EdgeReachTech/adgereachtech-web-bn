@@ -137,10 +137,10 @@ export class messageService {
         try {
             const messages = await Message.find({
               $or: [
-                {
-                  sender: userId,
-                  receiver: userId,
-                },
+                
+                  {sender: userId},
+                  {receiver: userId},
+                
               ],
               
             }).populate("receiver");
