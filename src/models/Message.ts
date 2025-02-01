@@ -6,15 +6,16 @@ interface interMessage extends Document {
     content: string;
     timeStamp: Date;
     read: boolean;
+    delivered:boolean
 }
 
 const messageSchema = new Schema<interMessage>({
     sender: { type: Schema.Types.ObjectId, reference: "User", required: true },
     receiver: { type: Schema.Types.ObjectId, reference: "User", required: true },
     content: { type: String, required: true },
-    timeStamp: { type: Date, default: Date.now(), required: true },
-    read: { type: Boolean, default: false, required: true }
-});
+    read: { type: Boolean, default: false, required: true },
+    delivered: { type: Boolean, default: false, required: true }
+},{timestamps:true});
 
 const Message = model<interMessage>("Message", messageSchema);
 export default Message;

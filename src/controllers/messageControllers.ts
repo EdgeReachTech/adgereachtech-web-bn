@@ -67,7 +67,7 @@ export class messageController {
         }
     }
     static getAllMessage = async (req:any, res:Response)=>{
-       try {
+       try { 
          const userId = await req.user.id;
          const message = await messageService.getAllMessage(userId);
          res.status(message.status).json(message.messages)

@@ -62,7 +62,7 @@ export const validateRole = [
       "Vice President",
     ])
     .withMessage(
-      "invalid you put 'develope', 'President', 'Project Manager', 'Quality Assurence', 'Vice President'"
+      "invalid you put 'developer', 'President', 'Project Manager', 'Quality Assurence', 'Vice President'"
     ),
 
   (req: Request, res: Response, next: NextFunction) => {

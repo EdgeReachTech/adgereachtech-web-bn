@@ -34,6 +34,7 @@ export class messageService {
             }
         } catch (error: any) {
             return { status: 404, message: "Error creating message" }
+            
         }
     }
 
@@ -121,11 +122,10 @@ export class messageService {
             if (!existingMessage) {
                 return {
                     status: 404,
-                    message: "User not found"
+                    message: "Message may be deleted "
                 }
             }
-
-            const message = await Message.findByIdAndUpdate(messageId, { read: true }, { new: true });
+         await Message.findOneAndUpdate({_id:messageId,receiver:userId}, { read: true });
             return {
                 status: 200,
                 message: "Message read",
@@ -143,7 +143,8 @@ export class messageService {
                   receiver: userId,
                 },
               ],
-            }).populate("sender receiver");
+              
+            }).populate("receiver");
             return ({status:200,messages})
         } catch (error:any) {
            return ({status:500, error:error.message}) 
