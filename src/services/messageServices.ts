@@ -33,7 +33,7 @@ export class messageService {
                 newMessage
             }
         } catch (error: any) {
-            return { status: 404, message: "Error creating message" }
+            return { status: 500, message: "Error creating message" }
             
         }
     }
