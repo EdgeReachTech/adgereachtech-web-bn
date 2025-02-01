@@ -25,7 +25,6 @@ export class messageService {
                 receiver: data.receiverId,
                 content: data.content,
                 isRead: false,
-                timeStamp: Date.now(),
             })
             return {
                 status: 200,
