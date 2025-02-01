@@ -32,7 +32,7 @@ export class messageService {
                 newMessage
             }
         } catch (error: any) {
-            return { status: 500, message: "Error creating message" }
+            return { status: 500, message: `Error creating message ${error.message}` }
             
         }
     }
