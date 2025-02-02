@@ -4,11 +4,20 @@ import { blogService } from "../services/blogServices";
 export class blogController {
     static createBlog = async (req: Request, res: Response) => {
         try {
+            
             const data = req.body;
             const userId = (req as any).user._id;
 
             data["userId"] = userId;
+            if(!req.file){
+                res.status(400).json({ message: "please upload image" });
+                return
+                
+            }
+            const image = req.file.path
+            data.image = image
             const blog = await blogService.createBlog(data);
+
             if (!blog) {
                 res.status(404).json({ message: "Enable to create blog" })
             }

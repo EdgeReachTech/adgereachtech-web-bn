@@ -6,7 +6,6 @@ export interface interBlog extends Document {
     description: string;
     image: string;
     userId: Types.ObjectId;
-    images: string[];
     comments: Types.ObjectId[];
     likes: number;
 }
@@ -17,7 +16,6 @@ const blogSchema = new Schema<interBlog>({
     title: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
-    images: { type: [String], required: true },
     comments: { type: [Schema.Types.ObjectId], ref: 'Comment', default: [] },
     likes: { type: Number, default: 0 },
 });
