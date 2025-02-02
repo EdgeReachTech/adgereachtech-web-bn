@@ -2,11 +2,11 @@ import express from "express";
 import { isLoggedIn } from "../middleware/authentication";
 import { blogController } from "../controllers/blogController";
 import { validateBlog } from "../validations/blogsValidation";
-import upload from "../middleware/upload.cloudinary";
+// import upload from "../middleware/upload.cloudinary";
 
 export const blogRouter = express.Router();
 
-blogRouter.post("/createBlog", isLoggedIn, validateBlog, upload.single('image'), blogController.createBlog);  
+blogRouter.post("/createBlog", isLoggedIn, validateBlog, blogController.createBlog);  
 /**
  * @swagger
  * /blog/createBlog:
