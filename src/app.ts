@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: "https://api.edgereachtech.com,https://adgereachtech-web-bn-5ycv.onrender.com,http://localhost:5000",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
