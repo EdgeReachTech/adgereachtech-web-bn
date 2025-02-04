@@ -3,7 +3,7 @@ name: Deploy to VPS (Backend)
 on:
   push:
     branches:
-      - develop  # prod repo
+      - develop  
 
 jobs:
   deploy:
@@ -19,7 +19,6 @@ jobs:
         uses: actions/checkout@v3
 
 
-      # Copy backend files to VPS
       - name: Copy files to VPS
         if: ${{ github.actor == 'rodriguecyber' || github.actor == 'EdgeReachTech' }}
         uses: appleboy/scp-action@v0.1.5
@@ -27,11 +26,10 @@ jobs:
           host: 77.37.124.116
           username: fiacre
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "./"  # 
-          target: "/var/www/adgereachtech-web-bn"  # Target folder on the server
+          source: "./"  
+          target: "/var/www/adgereachtech-web-bn" 
           port: 2200
 
-      # Restart the Node.js application using PM2
       - name: Restart Application
         if: ${{ github.actor == 'rodriguecyber' || github.actor == 'EdgeReachTech' }}
         uses: appleboy/ssh-action@v0.1.4
