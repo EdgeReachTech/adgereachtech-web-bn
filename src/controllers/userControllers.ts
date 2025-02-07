@@ -6,7 +6,7 @@ import { sendEmail } from "../helpers/sendEmail";
 import { decodeToken, generateToken } from "../utils/tokenUtils";
 import bcrypt from "bcrypt";
 import { resetTemplates } from "../utils/emailTempletes";
- 
+
 export class userController {
   static registerUser = async (req: Request, res: Response) => {
     try {
@@ -30,10 +30,12 @@ export class userController {
       if (!user) {
         return res.status(401).json({ message: "Failed to login! try gain" });
       }
-      if(user.status===200){
-return res.status(user.status).json({message:user.message,token:user.token})
+      if (user.status === 200) {
+        return res
+          .status(user.status)
+          .json({ message: user.message, token: user.token });
       }
-  
+
       return res.status(user.status).json({ message: user.message });
     } catch (error: any) {
       return res.status(500).json({ error: `Error ${error.message} happened` });
@@ -69,20 +71,20 @@ return res.status(user.status).json({message:user.message,token:user.token})
     try {
       const user = await User.find();
       res.status(200).json(user);
-    } catch (error:any) {
-      res.status(500).json({message:error.message})
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
     }
   };
   static getUSer = async (req: any, res: Response) => {
-   try {
-     const user = await User.findOne({ email: req.user.email });
-     if (!user) {
-       res.status(404).json({ message: "user data not found" });
-     }
-     res.status(200).json(user);
-   } catch (error:any) {
-    res.status(500).json({message:error.message})
-   }
+    try {
+      const user = await User.findOne({ email: req.user.email });
+      if (!user) {
+        res.status(404).json({ message: "user data not found" });
+      }
+      res.status(200).json(user);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
   };
 
   static deleteUser = async (req: Request, res: Response) => {
@@ -127,11 +129,9 @@ return res.status(user.status).json({message:user.message,token:user.token})
         .status(200)
         .json({ message: "check your email for resetting password" });
     } catch (error: any) {
-      res
-        .status(500)
-        .json({
-          message: `Error ${error.message} happened while resetting password`,
-        });
+      res.status(500).json({
+        message: `Error ${error.message} happened while resetting password`,
+      });
     }
   };
 
@@ -148,11 +148,9 @@ return res.status(user.status).json({message:user.message,token:user.token})
       );
       res.status(passwordChanged.status).json(passwordChanged.message);
     } catch (error: any) {
-      res
-        .status(500)
-        .json({
-          message: `Error ${error.message} happened while reset password`,
-        });
+      res.status(500).json({
+        message: `Error ${error.message} happened while reset password`,
+      });
     }
   };
 
