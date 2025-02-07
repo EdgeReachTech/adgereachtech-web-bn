@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { blogService } from "../services/blogServices";
 
 export class blogController {
-    static createBlog = async (req: Request, res: Response) => {
+    static createBlog = async (req: any, res: Response) => {
         try {
             
             const data = req.body;
