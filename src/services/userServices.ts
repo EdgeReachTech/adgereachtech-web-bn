@@ -74,7 +74,7 @@ export class userService {
           message:
             "your are not verified. check email for account verification",
         };
-      }
+      } 
 
       const token = generateToken(userExist);
       if(!token){
@@ -84,7 +84,7 @@ export class userService {
 
       return { status: 200, message: "Logged in successfully", token };
     } catch (error: any) {
-      console.error(error);
+    
       return { status: 500, message: `Error: ${error.message}` };
     }
   };

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { portfolioService } from "../services/portfolioServices";
+import Portfolio from "../models/Portfolio";
 
 export class portfolioController {
   static createPortfolio = async (req: any, res: Response) => {
@@ -15,6 +16,20 @@ export class portfolioController {
       }
 
       res.status(portfolio.status).json({ message: portfolio.message, data });
+    } catch (error: any) {
+      res.status(500).json({ error: `Error ${error.message} happened` });
+    }
+  };
+  static Portfolios = async (req: Request, res: Response) => {
+    try {
+     
+  
+    
+
+      const portfolios = await Portfolio.find();
+      
+
+      res.status(200).json(portfolios);
     } catch (error: any) {
       res.status(500).json({ error: `Error ${error.message} happened` });
     }

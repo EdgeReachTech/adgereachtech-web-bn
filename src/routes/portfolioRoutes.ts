@@ -20,6 +20,10 @@ portfolioRouter.delete(
   "/deletePortfolio/:portfolioId/:userId",
   portfolioController.deletePortfolio
 );
+portfolioRouter.get(
+  "/",
+  portfolioController.Portfolios
+);
 
 /**
  * @swagger

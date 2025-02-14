@@ -4,7 +4,7 @@ import { validateChangeUserPassword, validateRole, validateUser } from "../valid
 import { isLoggedIn } from "../middleware/authentication";
 import { isAdmin } from "../middleware/authorisation";
 
-export const userRouter = express.Router();
+export const userRouter = express.Router(); 
 
 userRouter.post("/register", validateUser, userController.registerUser);
 userRouter.post("/login", userController.login);

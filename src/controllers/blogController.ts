@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import { blogService } from "../services/blogServices";
 
 export class blogController {
-  static createBlog = async (req: Request, res: Response) => {
-    try {
-      const data = req.body;
-      const userId = (req as any).user._id;
+    static createBlog = async (req: any, res: Response) => {
+        try {
+            
+            const data = req.body;
+            const userId = (req as any).user._id;
 
       data["userId"] = userId;
 
@@ -26,7 +27,7 @@ export class blogController {
     }
   };
 
-  static updateBlog = async (req: Request, res: Response) => {
+  static updateBlog = async (req: any, res: Response) => {
     try {
       const data = req.body;
       const userId = (req as any).user._id;

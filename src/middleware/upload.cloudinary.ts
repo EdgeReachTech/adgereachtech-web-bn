@@ -4,7 +4,7 @@ import cloudinary from "../config/cloudinary";
 
 const storage: StorageEngine = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: (req, file) => {
+  params: (req:any, file:any) => {
     let resourceType: "image" | "video" | "raw" = "raw";
 
     if (file.mimetype.startsWith("image")) {

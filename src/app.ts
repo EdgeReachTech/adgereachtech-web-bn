@@ -7,7 +7,6 @@ import { commentRouter } from "./routes/commentRoutes";
 import { blogRouter } from "./routes/blogsRoutes";
 import { messageRouter } from "./routes/messageRoutes";
 import swaggeUi from "swagger-ui-express";
-
 import cors from "cors";
 import swaggerJSDoc from "swagger-jsdoc";
 import path from "path";
@@ -19,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://edgereachtech.com",
+    origin: "*",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,

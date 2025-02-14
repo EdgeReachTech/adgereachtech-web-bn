@@ -15,12 +15,12 @@ export class userController {
       userData["password"] = await hashingPassword(userData.password);
       const user = await userService.registerUser(userData);
       if (!user) {
-        res.status(401).json({ message: "Failed to register users" });
+        return res.status(400).json({ message: "Failed to register users" });
       }
-      res.status(user?.status as number).json({ message: user?.message });
+      res.status(user.status as number).json({ message: user?.message });
     } catch (error: any) {
       res.status(500).json({ error: `Error ${error.message} happened` });
-    }
+    } 
   };
 
   static login = async (req: Request, res: Response) => {
@@ -28,14 +28,12 @@ export class userController {
     try {
       const user = await userService.login(loginData);
       if (!user) {
-        return res.status(401).json({ message: "Failed to login! try gain" });
-      }
-      if (user.status === 200) {
-        return res
-          .status(user.status)
-          .json({ message: user.message, token: user.token });
+        return res.status(400).json({ message: "Failed to login! try gain" });
       }
 
+      if(user.status===200){
+       return res.status(user.status).json({message:user.message,token:user.token})
+      }
       return res.status(user.status).json({ message: user.message });
     } catch (error: any) {
       return res.status(500).json({ error: `Error ${error.message} happened` });
@@ -92,7 +90,7 @@ export class userController {
     try {
       const result = await userService.deleteUser(userId);
 
-      return res.status(result?.status).json({ message: result?.message });
+      return res.status(result.status).json({ message: result.message });
     } catch (error) {
       return res.status(500).json({ error: `Error ${error} happened` });
     }
