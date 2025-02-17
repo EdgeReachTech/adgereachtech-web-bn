@@ -14,7 +14,6 @@ blogRouter.post(
   blogController.createBlog
 );
 
-blogRouter.post("/createBlog", isLoggedIn,upload.single('image'), blogController.createBlog);  
 /**
  * @swagger
  * /blog/createBlog:
