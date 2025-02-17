@@ -1,8 +1,9 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { env } from "../config/env";
 
 export const generateToken = (user: any) => {
   try {
-    const token = jwt.sign({ user }, process.env.SECRET_KEY as string, {
+    const token = jwt.sign({ user }, env.SECRET_KEY as string, {
       expiresIn: "24h",
     });
     return token;
@@ -19,7 +20,7 @@ export const decodeToken = (token: string) => {
   }
 
   try {
-    const decoded:JwtPayload = jwt.verify(token, process.env.SECRET_KEY as string) as JwtPayload;
+    const decoded:JwtPayload = jwt.verify(token, env.SECRET_KEY as string) as JwtPayload;
     return decoded.user;
   } catch (error) {
     return null;

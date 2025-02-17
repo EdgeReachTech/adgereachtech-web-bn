@@ -10,16 +10,26 @@ import swaggeUi from "swagger-ui-express";
 import cors from "cors";
 import swaggerJSDoc from "swagger-jsdoc";
 import path from "path";
+import { env } from "./config/env";
+import { createServer } from "http";
+import { Server } from "socket.io";
 dotenv.config();
 
-const PORT = process.env.PORT;
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(
+
+const server = express();
+const app =createServer(server)
+const io= new Server(app,{
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+  }
+})
+server.use(cors());
+server.use(express.json());
+server.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], 
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
@@ -68,19 +78,26 @@ const options = {
 };
 
 const swaggerSpec = swaggerJSDoc(options);
-app.use("/api-docs", swaggeUi.serve, swaggeUi.setup(swaggerSpec));
+server.use("/api-docs", swaggeUi.serve, swaggeUi.setup(swaggerSpec));
 
-app.get("/", (req, res) => {
+server.get("/", (req, res) => {
   res.send("HEY I AM EDGEREACH SERVER IM DOING GREAT!!");
 });
 
-app.use("/user", userRouter);
-app.use("/portfolio", portfolioRouter);
-app.use("/comment", commentRouter);
-app.use("/blog", blogRouter);
-app.use("/message", messageRouter);
+server.use("/user", userRouter);
+server.use("/portfolio", portfolioRouter);
+server.use("/comment", commentRouter);
+server.use("/blog", blogRouter);
+server.use("/message", messageRouter); 
 
-app.listen(PORT, () => {
-  console.log(`app is listening to http://localhost:${PORT}`);
+io.on('connection',(socket)=>{
+  console.log('socket connected')
+
+socket.on('send_message',(message)=>{
+  console.log('Receive message',message)
+  socket.emit('message_received',message)
+})})
+app.listen(env.PORT, () => {
+  console.log(`app is listening to http://localhost:${env.PORT}`);
 });
 export default app;
