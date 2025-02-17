@@ -1,6 +1,6 @@
 import express from "express";
 import { isLoggedIn } from "../middleware/authentication";
-import { blogController } from "../controllers/blogController";
+import { blogController } from "../controllers/blogController"; 
 // import { validateBlog } from "../validations/blogsValidation";
 import upload from "../middleware/upload.cloudinary";
 
@@ -14,6 +14,7 @@ blogRouter.post(
   blogController.createBlog
 );
 
+blogRouter.post("/createBlog", isLoggedIn,upload.single('image'), blogController.createBlog);  
 /**
  * @swagger
  * /blog/createBlog:

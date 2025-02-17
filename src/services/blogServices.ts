@@ -1,10 +1,10 @@
-import cloudinary from "../config/cloudinary";
+
 import Blog from "../models/Blogs";
-import User from "../models/User";
 import { deleteCloudinaryImage } from "../utils/deleteExistingImage";
 
 export class blogService {
   static createBlog = async (data: any) => {
+    
     try {
       const blog = await Blog.create(data);
       if (!blog) {
@@ -16,7 +16,7 @@ export class blogService {
         message: "Blog created",
       };
     } catch (error: any) {
-      console.log(error);
+    
       return {
         status: 500,
         message: error.message,

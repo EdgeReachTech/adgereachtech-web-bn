@@ -12,6 +12,7 @@ const storage: StorageEngine = new CloudinaryStorage({
     } else if (file.mimetype.startsWith("video")) {
       resourceType = "video";
     }
+   
 
     return {
       folder: "uploads/",
