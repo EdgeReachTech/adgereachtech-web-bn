@@ -6,7 +6,8 @@ import { portfolioRouter } from "./routes/portfolioRoutes";
 import { commentRouter } from "./routes/commentRoutes";
 import { blogRouter } from "./routes/blogsRoutes";
 import { messageRouter } from "./routes/messageRoutes";
-import swaggeUi from "swagger-ui-express";
+import studentRouter  from "./routes/student.routes";
+import swaggeUi, { serve } from "swagger-ui-express";
 import cors from "cors";
 import swaggerJSDoc from "swagger-jsdoc";
 import path from "path";
@@ -88,7 +89,8 @@ server.use("/user", userRouter);
 server.use("/portfolio", portfolioRouter);
 server.use("/comment", commentRouter);
 server.use("/blog", blogRouter);
-server.use("/message", messageRouter); 
+server.use("/message", messageRouter);
+server.use("/students",studentRouter) 
 
 io.on('connection',(socket)=>{
   console.log('socket connected')
