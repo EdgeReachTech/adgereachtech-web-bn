@@ -12,12 +12,14 @@ portfolioRouter.post(
   portfolioController.createPortfolio
 );
 portfolioRouter.patch(
-  "/updatePortfolio/:portfolioId/:userId",
+  "/updatePortfolio/:portfolioId",
   validatePortfolio,
+  isLoggedIn,
   portfolioController.updatePortfolio
 );
 portfolioRouter.delete(
-  "/deletePortfolio/:portfolioId/:userId",
+  "/deletePortfolio/:portfolioId",
+  isLoggedIn,
   portfolioController.deletePortfolio
 );
 portfolioRouter.get(
