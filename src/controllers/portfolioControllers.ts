@@ -35,39 +35,45 @@ export class portfolioController {
     }
   };
 
-  static updatePortfolio = async (req: Request, res: Response) => {
+  static updatePortfolio = async (req: any, res: Response) => {
     try {
-      const userId = req.params.userId;
+      const userId = req.user._id; // Use authenticated user ID
       const portfolioId = req.params.portfolioId;
-      const bothIds = { portfolioId, userId }
-
+      const bothIds = { portfolioId, userId };
+  
       const data = req.body;
       const updatedPortfolio = await portfolioService.updatePortfolio(data, bothIds);
       if (!updatedPortfolio) {
         res.status(404).json({ message: "Failed to update portfolio" });
       }
-
+  
       res.status(updatedPortfolio.status).json({ message: updatedPortfolio.message, data: bothIds });
     } catch (error: any) {
       res.status(500).json({ error: `Error ${error.message} happened` });
     }
-  }
+  };
 
-  static deletePortfolio = async (req: Request, res: Response) => {
+  static deletePortfolio = async (req: any, res: Response) => {
     try {
-      // @ts-ignore
-      const userId = req.user._id;
+      const userId = req.user._id; // Use authenticated user ID from token
       const portfolioId = req.params.portfolioId;
-      const bothIds = { portfolioId, userId }
-
+      const bothIds = { portfolioId, userId };
+  
+      console.log("Attempting to delete portfolio with:", bothIds); // Debug
+  
       const deletedPortfolio = await portfolioService.deletePortfolio(bothIds);
+      
       if (!deletedPortfolio) {
-        res.status(404).json({ message: "Fail to delete portfolio" });
+        console.log("Portfolio not found or deletion failed.");
+        return res.status(404).json({ message: "Failed to delete portfolio" });
       }
-
+  
+      console.log("Deleted portfolio:", deletedPortfolio);
       res.status(deletedPortfolio.status).json({ message: deletedPortfolio.message, data: bothIds });
     } catch (error: any) {
+      console.error("Error deleting portfolio:", error.message);
       res.status(500).json({ message: `Error ${error.message} happened` });
     }
-  }
+  };
+  
 }

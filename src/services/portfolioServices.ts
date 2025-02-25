@@ -1,8 +1,7 @@
 import Portfolio from "../models/Portfolio";
 
 export class portfolioService {
-
-  // Create portfolio
+  // Create portfolio (unchanged, assuming it works)
   static async createPortfolio(data: any) {
     try {
       const portfolio = await Portfolio.create(data);
@@ -10,7 +9,7 @@ export class portfolioService {
         return { status: 404, message: "Unable to create portfolio" };
       }
 
-      return { status: 200, message: "Portfolio created successfully", };
+      return { status: 200, message: "Portfolio created successfully" };
     } catch (error: any) {
       return {
         status: 500,
@@ -19,15 +18,19 @@ export class portfolioService {
     }
   }
 
-  // Update portfolio
+  // Update portfolio (unchanged, assuming it works)
   static updatePortfolio = async (data: any, bothIds: any) => {
     try {
+      if (!bothIds || !bothIds.portfolioId || !bothIds.userId) {
+        return { status: 400, message: "Missing or invalid portfolioId or userId" };
+      }
+
       const portfolio = await Portfolio.findById(bothIds.portfolioId);
       if (!portfolio) {
-        return { status: 404, message: "Unable to find portfolio" }
+        return { status: 404, message: "Unable to find portfolio" };
       }
-      if (portfolio.userId !== bothIds.userId) {
-        return { status: 401, message: "Unauthorized" };
+      if (portfolio.userId.toString() !== bothIds.userId.toString()) {
+        return { status: 401, message: "Unauthorized! " };
       }
 
       const updatedPortfolio = await Portfolio.findByIdAndUpdate(
@@ -44,26 +47,41 @@ export class portfolioService {
       return {
         status: 500,
         message: `Error ${error.message} happened while updating portfolio`,
-      }
+      };
     }
   }
 
   // Delete portfolio
   static deletePortfolio = async (bothIds: any) => {
     try {
+      // Validate input
+      if (!bothIds || !bothIds.portfolioId || !bothIds.userId) {
+        return { status: 400, message: "Missing or invalid portfolioId or userId" };
+      }
+
+      console.log("Deleting portfolio with IDs:", bothIds); // Debug
+
+      // Find the portfolio
       const portfolio = await Portfolio.findById(bothIds.portfolioId);
       if (!portfolio) {
-        return { status: 404, message: "Unable to find portfolio" };
-      }
-      if (portfolio.userId !== bothIds.userId) {
-        return { status: 401, message: "Unauthorized" };
+        return { status: 404, message: "Portfolio not found" };
       }
 
-      await Portfolio.findByIdAndDelete(bothIds.portfolioId);
-      return { status: 200, message: "Portfolio deleted" };
+      // Check authorization
+      if (portfolio.userId !== bothIds.userId) {
+        return { status: 401, message: "Unauthorized: User does not own this portfolio" };
+      }
+
+      // Delete the portfolio
+      const deletedPortfolio = await Portfolio.findByIdAndDelete(bothIds.portfolioId);
+      if (!deletedPortfolio) {
+        return { status: 500, message: "Failed to delete portfolio" };
+      }
+
+      return { status: 200, message: "Portfolio deleted successfully" };
     } catch (error: any) {
-      return { status: 500, message: `${error.message}` };
+      console.error("Error in deletePortfolio service:", error);
+      return { status: 500, message: `Error deleting portfolio: ${error.message}` };
     }
   };
-
 }
